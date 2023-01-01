@@ -15,7 +15,18 @@ public class Bullet : MonoBehaviour
     private GameObject[] AllEnemyBullets;
     private GameObject AnEnemyBullet;
 
+    [SerializeField]
+    private GameObject ExplodeEffect;
     
+
+    private void CreateExposionFX()
+    {
+        int SpawnHere = Random.Range(0, 360);
+        for(int i = 0; i < 4; i++)
+        {
+            Instantiate(ExplodeEffect, transform.position, Random.rotation);
+        }
+    }
 
     private void Start()
     {
@@ -40,6 +51,7 @@ public class Bullet : MonoBehaviour
                 if (Enemy.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
                 {
                     ToChangeStatusOfEnemy.status = false;
+                    CreateExposionFX();
                     player.KillHistory++;
                     ToGetlevel.PlayExplodeSFX();
                     Destroy(Enemy);
@@ -61,6 +73,7 @@ public class Bullet : MonoBehaviour
             if(AnEnemyBullet.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
             {
                 ToGetlevel.PlayExplodeSFX();
+                CreateExposionFX();
                 Destroy(AnEnemyBullet);
                 Destroy(gameObject);
             }

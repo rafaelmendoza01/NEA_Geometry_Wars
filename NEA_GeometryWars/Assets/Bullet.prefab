@@ -118,4 +118,4 @@ MonoBehaviour:
   AllEnemies: []
   player: {fileID: 0}
   ToChangeStatusOfEnemy: {fileID: 0}
-  ExplosionSound: {fileID: 0}
+  ExplodeEffect: {fileID: 6614442452979018516, guid: c006a1f0c7d477a4bad0967108e98eda, type: 3}
