@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private float moveSpeed = 5f;
-    public Weapon weapon;
+    public GameObject bulletPrefab;
+    public Transform Firepoint;
     public float radius;
     private float AngleSpeed = 900f;
     public int KillHistory = 0;
@@ -25,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            weapon.Fire();
+            Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
         }
 
         moveDirection = new Vector2(moveX, moveY).normalized;
