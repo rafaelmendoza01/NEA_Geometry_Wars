@@ -30,8 +30,20 @@ public class RandomSpawner : MonoBehaviour
     private AudioSource Tempest;
     [SerializeField]
     private AudioSource CollisionSoundFX;
+    [SerializeField]
+    private AudioSource DeathSFX;
+    [SerializeField]
+    private AudioSource ShootingSFX;
 
+    public void PlayDeathSFX()
+    {
+        DeathSFX.Play();
+    }
 
+    public void PlayShootingSound()
+    {
+        ShootingSFX.Play();
+    }
     public void PlayExplodeSFX()
     {
         CollisionSoundFX.Play();
