@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
     public bool status = true;
 
 
+
     private void Update()
     {
         NeedToGetPlayerStats = GameObject.FindObjectOfType<RandomSpawner>();
