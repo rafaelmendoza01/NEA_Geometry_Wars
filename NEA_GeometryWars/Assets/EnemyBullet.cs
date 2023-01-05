@@ -26,7 +26,7 @@ public class EnemyBullet : MonoBehaviour
         {
             ToGetPlayerStat.Life--;
             ToGetPlayerStat.PlayerSpawnState = RandomSpawner.PlayerJustSpawned.SpawnPlayerAgain;
-            ToGetPlayerStat.PlayExplodeSFX();
+            ToGetPlayerStat.PlayDeathSFX();
             Destroy(player);
             Destroy(gameObject);
             

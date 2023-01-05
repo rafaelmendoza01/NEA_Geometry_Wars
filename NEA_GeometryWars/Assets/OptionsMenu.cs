@@ -14,6 +14,11 @@ public class OptionsMenu : MonoBehaviour
     static public bool Music2Wanted = false;
     static public bool Music3Wanted = false;
 
+    static public bool KeyBoardToShoot = false;
+    static public bool MouseToShoot = true;
+
+    static public bool SpecialGameMode = false;
+
     public void Music1Status()
     {
         Music2Wanted = false;
@@ -43,8 +48,21 @@ public class OptionsMenu : MonoBehaviour
         Music2.Stop();
         Music3.Play();
     }
-    public void ChoiceOfShooting()
-    {
 
+    public void KeyBoardShooting()
+    {
+        KeyBoardToShoot= true;
+        MouseToShoot = false;
+    }
+
+    public void MouseShooting()
+    {
+        KeyBoardToShoot = false;
+        MouseToShoot = true;
+    }
+
+    public void SpecialMode()
+    {
+        SpecialGameMode = true;
     }
 }

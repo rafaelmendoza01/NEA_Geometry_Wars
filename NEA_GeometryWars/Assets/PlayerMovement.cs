@@ -10,11 +10,14 @@ public class PlayerMovement : MonoBehaviour
     public float radius;
     private float AngleSpeed = 900f;
     public int KillHistory = 0;
-    
-
+    private RandomSpawner ToPlaySFX;
 
     Vector2 moveDirection;
     Vector2 mousePosition;
+    private void Start()
+    {
+        ToPlaySFX = GameObject.FindObjectOfType<RandomSpawner>();
+    }
 
     // Since this is called once per frame, this function does everything not related to moving the players such as getting inputs 
     void Update()
@@ -24,10 +27,16 @@ public class PlayerMovement : MonoBehaviour
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && OptionsMenu.MouseToShoot == true)
         {
+            ToPlaySFX.PlayShootingSound();
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
         }
+
+        //if(Input.GetButtonDown(KeyCode.P) && OptionsMenu.KeyBoardToShoot == true)
+        //{
+
+        //}
 
         moveDirection = new Vector2(moveX, moveY).normalized;
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

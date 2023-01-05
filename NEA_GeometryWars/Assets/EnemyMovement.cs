@@ -34,7 +34,7 @@ public class EnemyMovement : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
             if (player.GetComponent<CircleCollider2D>().radius + radius > distance)
             {
-                NeedToGetPlayerStats.PlayExplodeSFX();
+                NeedToGetPlayerStats.PlayDeathSFX();
                 NeedToGetPlayerStats.Life--;
                 NeedToGetPlayerStats.PlayerSpawnState = RandomSpawner.PlayerJustSpawned.SpawnPlayerAgain;
                 Destroy(player);
