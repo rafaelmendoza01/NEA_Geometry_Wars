@@ -50,7 +50,6 @@ public class Bullet : MonoBehaviour
                 distance = Diff.magnitude;
                 if (Enemy.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
                 {
-                    ToChangeStatusOfEnemy.status = false;
                     CreateExposionFX();
                     player.KillHistory++;
                     ToGetlevel.PlayExplodeSFX();

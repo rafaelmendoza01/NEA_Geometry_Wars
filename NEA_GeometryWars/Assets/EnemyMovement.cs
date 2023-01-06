@@ -11,28 +11,18 @@ public class EnemyMovement : MonoBehaviour
     public GameObject player;
     public float radius;
     public float distance;
-    public bool status = true;
 
     private enum ToIncreaseSpeed
     {
-        Increase,
+        JustIncrease,
         Waiting,
+        LevelJustChanged,
     }
     ToIncreaseSpeed CurrentState = ToIncreaseSpeed.Waiting;
 
     private void Update()
     {
-        if(NeedToGetPlayerStats.level % 5 == 0)
-        {
-            CurrentState = ToIncreaseSpeed.Increase;
-        }
-
-        if(CurrentState == ToIncreaseSpeed.Increase)
-        {
-            moveSpeed += increaseSpeedBy;
-            CurrentState = ToIncreaseSpeed.Waiting;
-        }
-
+        
         NeedToGetPlayerStats = GameObject.FindObjectOfType<RandomSpawner>();
         player = GameObject.FindGameObjectWithTag("Player");
         radius = GetComponent<CircleCollider2D>().radius;
@@ -43,6 +33,21 @@ public class EnemyMovement : MonoBehaviour
             distance = Diff.magnitude;
         }
         
+        if (NeedToGetPlayerStats.level % 5 != 0)
+        {
+            CurrentState = ToIncreaseSpeed.Waiting;
+        }
+
+        if (NeedToGetPlayerStats.level % 5 == 0 && CurrentState == ToIncreaseSpeed.Waiting)
+        {
+            CurrentState = ToIncreaseSpeed.LevelJustChanged;
+        }
+
+        if (CurrentState == ToIncreaseSpeed.LevelJustChanged)
+        {
+            moveSpeed += increaseSpeedBy;
+            CurrentState = ToIncreaseSpeed.JustIncrease;
+        }
     }
 
     private void FixedUpdate()
