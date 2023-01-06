@@ -33,10 +33,13 @@ public class PlayerMovement : MonoBehaviour
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
         }
 
-        //if(Input.GetButtonDown(KeyCode.P) && OptionsMenu.KeyBoardToShoot == true)
-        //{
+        if(Input.GetKeyDown(KeyCode.P) && OptionsMenu.KeyBoardToShoot == true)
+        {
+            ToPlaySFX.PlayShootingSound();
+            Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
+        }
 
-        //}
+       
 
         moveDirection = new Vector2(moveX, moveY).normalized;
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

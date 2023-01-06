@@ -6,16 +6,33 @@ public class EnemyMovement : MonoBehaviour
 
     private RandomSpawner NeedToGetPlayerStats;
     private float moveSpeed = 2f;
+    private float increaseSpeedBy = 0.5f;
     Vector2 GoHereIfNoPlayer;
     public GameObject player;
     public float radius;
     public float distance;
     public bool status = true;
 
-
+    private enum ToIncreaseSpeed
+    {
+        Increase,
+        Waiting,
+    }
+    ToIncreaseSpeed CurrentState = ToIncreaseSpeed.Waiting;
 
     private void Update()
     {
+        if(NeedToGetPlayerStats.level % 5 == 0)
+        {
+            CurrentState = ToIncreaseSpeed.Increase;
+        }
+
+        if(CurrentState == ToIncreaseSpeed.Increase)
+        {
+            moveSpeed += increaseSpeedBy;
+            CurrentState = ToIncreaseSpeed.Waiting;
+        }
+
         NeedToGetPlayerStats = GameObject.FindObjectOfType<RandomSpawner>();
         player = GameObject.FindGameObjectWithTag("Player");
         radius = GetComponent<CircleCollider2D>().radius;
