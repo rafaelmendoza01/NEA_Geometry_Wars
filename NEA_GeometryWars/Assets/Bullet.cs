@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public GameObject Enemy;
-    public GameObject[] AllEnemies;
+    private GameObject Enemy;
+    private GameObject[] AllEnemies;
     private float distance;
     private float FireForce = 20f;
-    public PlayerMovement player;
-    public EnemyMovement ToChangeStatusOfEnemy;
+    private PlayerMovement player;
     private RandomSpawner ToGetlevel;
     private GameObject[] AllEnemyBullets;
     private GameObject AnEnemyBullet;
@@ -19,7 +18,7 @@ public class Bullet : MonoBehaviour
     private GameObject ExplodeEffect;
     
 
-    private void CreateExposionFX()
+    private void CreateExplosionFX()
     {
         int SpawnHere = Random.Range(0, 360);
         for(int i = 0; i < 4; i++)
@@ -31,7 +30,6 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindObjectOfType<PlayerMovement>();
-        ToChangeStatusOfEnemy = GameObject.FindObjectOfType<EnemyMovement>();
         ToGetlevel = GameObject.FindObjectOfType<RandomSpawner>();
     }
     private void Update()
@@ -50,18 +48,19 @@ public class Bullet : MonoBehaviour
                 distance = Diff.magnitude;
                 if (Enemy.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
                 {
-                    CreateExposionFX();
+                    CreateExplosionFX();
                     player.KillHistory++;
                     ToGetlevel.PlayExplodeSFX();
                     Destroy(Enemy);
+                    if (player.KillHistory == ToGetlevel.level)
+                    {
+                        ToGetlevel.LevelCleared = true;
+                        player.KillHistory = 0;
+                    }
                     Destroy(gameObject);
                 }
             }
-            if(player.KillHistory == ToGetlevel.level)
-            {
-                ToGetlevel.LevelCleared = true;
-                player.KillHistory = 0;
-            } 
+           
         }
 
         for(int i = 0; i < AllEnemyBullets.Length; i++)
@@ -72,7 +71,7 @@ public class Bullet : MonoBehaviour
             if(AnEnemyBullet.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
             {
                 ToGetlevel.PlayExplodeSFX();
-                CreateExposionFX();
+                CreateExplosionFX();
                 Destroy(AnEnemyBullet);
                 Destroy(gameObject);
             }

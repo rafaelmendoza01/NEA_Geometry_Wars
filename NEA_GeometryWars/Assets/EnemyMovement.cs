@@ -4,13 +4,12 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
 
-    private RandomSpawner NeedToGetPlayerStats;
+    private RandomSpawner NeedToGetStats;
     private float moveSpeed = 2f;
     private float increaseSpeedBy = 0.5f;
-    Vector2 GoHereIfNoPlayer;
-    public GameObject player;
-    public float radius;
-    public float distance;
+    private GameObject player;
+    private float radius;
+    private float distance;
 
     private enum ToIncreaseSpeed
     {
@@ -23,7 +22,7 @@ public class EnemyMovement : MonoBehaviour
     private void Update()
     {
         
-        NeedToGetPlayerStats = GameObject.FindObjectOfType<RandomSpawner>();
+        NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
         player = GameObject.FindGameObjectWithTag("Player");
         radius = GetComponent<CircleCollider2D>().radius;
 
@@ -33,12 +32,12 @@ public class EnemyMovement : MonoBehaviour
             distance = Diff.magnitude;
         }
         
-        if (NeedToGetPlayerStats.level % 5 != 0)
+        if (NeedToGetStats.level % 5 != 0)
         {
             CurrentState = ToIncreaseSpeed.Waiting;
         }
 
-        if (NeedToGetPlayerStats.level % 5 == 0 && CurrentState == ToIncreaseSpeed.Waiting)
+        if (NeedToGetStats.level % 5 == 0 && CurrentState == ToIncreaseSpeed.Waiting)
         {
             CurrentState = ToIncreaseSpeed.LevelJustChanged;
         }
@@ -57,9 +56,9 @@ public class EnemyMovement : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
             if (player.GetComponent<CircleCollider2D>().radius + radius > distance)
             {
-                NeedToGetPlayerStats.PlayDeathSFX();
-                NeedToGetPlayerStats.Life--;
-                NeedToGetPlayerStats.PlayerSpawnState = RandomSpawner.PlayerJustSpawned.SpawnPlayerAgain;
+                NeedToGetStats.PlayDeathSFX();
+                NeedToGetStats.Life--;
+                NeedToGetStats.PlayerSpawnState = RandomSpawner.PlayerJustSpawned.SpawnPlayerAgain;
                 Destroy(player);
             }
         }

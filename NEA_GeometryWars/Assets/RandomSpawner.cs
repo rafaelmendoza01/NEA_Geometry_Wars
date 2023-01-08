@@ -18,8 +18,6 @@ public class RandomSpawner : MonoBehaviour
     public int Life;
     public bool LevelCleared = true;
 
-    private int NewSet = 0;
-
     private OptionsMenu TheirChosenSettings;
 
     [SerializeField]
@@ -57,8 +55,7 @@ public class RandomSpawner : MonoBehaviour
 
     private enum SpawnState
     {
-        TimeToSpawn,
-        Counting, 
+        TimeToSpawn, 
         Spawning,
         Waiting,
     }
@@ -79,8 +76,8 @@ public class RandomSpawner : MonoBehaviour
     SpawnState State = SpawnState.TimeToSpawn;
     //to store the types of enemies to be spawned as an array.
 
-    private float TimeBetweenWaves = 0.6f;
-    private float TimeBetweenEnemies = 0.05f;
+    private float TimeBetweenWaves = 0.9f;
+    private float TimeBetweenEnemies = 0.3f;
     //to wait correct amount of time between each enemy and wave of enemies
 
     private void Start()
@@ -115,16 +112,18 @@ public class RandomSpawner : MonoBehaviour
             {
                 State = SpawnState.TimeToSpawn;
             } 
-            //last checked-
+            //last checked
 
             if (State == SpawnState.TimeToSpawn)
             {
                 level++;
                 StartCoroutine(SpawnWave());
+                LevelCleared = false;
             }
         }
         else
         {
+
             for(int i = 0; i < LivingEnemies.Length; i++)
             {
                 Destroy(LivingEnemies[i]);
@@ -153,10 +152,9 @@ public class RandomSpawner : MonoBehaviour
     //purpose is to know when to spawn enemies
     IEnumerator SpawnWave()
     {
-        LevelCleared = false;
         int waves = level / 6;
         int NumEnemyToSpawnLast = level % 6;
-        NewSet = 0;
+        int NewSet = 0;
 
         while ((NewSet < level) || (State == SpawnState.TimeToSpawn))
         {

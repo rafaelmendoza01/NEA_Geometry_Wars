@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     private float distance;
     private float EnemyBulletSpeed = 3f;
     private RandomSpawner ToGetPlayerStat;

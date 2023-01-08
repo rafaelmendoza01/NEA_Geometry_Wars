@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemyShooting : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     private float AngleSpeed = 400f;
     public EnemyWeapon WeaponOfEnemy;
 
-    public enum ShootingTime
+    private enum ShootingTime
     {
         ShootNow,
         WaitFirst,
@@ -39,8 +39,11 @@ public class EnemyShooting : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 AimAt = player.transform.position - transform.position;
-        Quaternion RotateToPlayer = Quaternion.LookRotation(transform.forward, AimAt);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, RotateToPlayer, Time.deltaTime * AngleSpeed);
+        if (player != null)
+        {
+            Vector2 AimAt = player.transform.position - transform.position;
+            Quaternion RotateToPlayer = Quaternion.LookRotation(transform.forward, AimAt);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, RotateToPlayer, Time.deltaTime * AngleSpeed);
+        }
     }
 }
