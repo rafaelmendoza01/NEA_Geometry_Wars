@@ -44,7 +44,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (CurrentState == ToIncreaseSpeed.LevelJustChanged)
         {
-            moveSpeed += increaseSpeedBy;
+            moveSpeed += (NeedToGetStats.level/6 + increaseSpeedBy);
             CurrentState = ToIncreaseSpeed.JustIncrease;
         }
     }
