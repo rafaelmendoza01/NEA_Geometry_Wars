@@ -9,16 +9,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
+    private GameObject bombPrefab;
+    [SerializeField]
     private Transform Firepoint;
     private float AngleSpeed = 900f;
     public int KillHistory = 0;
-    private RandomSpawner ToPlaySFX;
+    private RandomSpawner GetStats;
+    private GameObject AbombStillExist;
+
 
     Vector2 moveDirection;
     Vector2 mousePosition;
     private void Start()
     {
-        ToPlaySFX = GameObject.FindObjectOfType<RandomSpawner>();
+        GetStats = GameObject.FindObjectOfType<RandomSpawner>();
     }
 
     // Since this is called once per frame, this function does everything not related to moving the players such as getting inputs 
@@ -26,17 +30,37 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
+        AbombStillExist = GameObject.FindGameObjectWithTag("Bomb");
 
+        //for firing bullets
         if (Input.GetMouseButtonDown(0) && OptionsMenu.MouseToShoot == true)
         {
-            ToPlaySFX.PlayShootingSound();
+            GetStats.PlayShootingSound();
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
         }
 
         if(Input.GetKeyDown(KeyCode.O) && OptionsMenu.KeyBoardToShoot == true)
         {
-            ToPlaySFX.PlayShootingSound();
+            GetStats.PlayShootingSound();
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
+        }
+        
+        //for activating bombs
+        if(Input.GetMouseButtonDown(1) && GetStats.BombsUsed > 0 && OptionsMenu.MouseToShoot == true)
+        {
+            if (AbombStillExist == null)
+            {
+                Instantiate(bombPrefab, Firepoint.position, Firepoint.rotation);
+                GetStats.BombsUsed--;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.P) && GetStats.BombsUsed > 0 && OptionsMenu.KeyBoardToShoot == true)
+        {
+            if (AbombStillExist == null)
+            {
+                Instantiate(bombPrefab, Firepoint.position, Firepoint.rotation);
+                GetStats.BombsUsed--;
+            }
         }
 
         moveDirection = new Vector2(moveX, moveY).normalized;

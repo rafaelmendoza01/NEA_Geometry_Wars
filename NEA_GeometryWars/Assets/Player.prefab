@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1054099039298634941, guid: c43b8bf1cd7846d4aa7c1d670ff91cca, type: 3}
+  bombPrefab: {fileID: 8590636466752297474, guid: 8f04cff152a62ea4c8202532d1e59644, type: 3}
   Firepoint: {fileID: 5146517719284452384}
-  radius: 0
   KillHistory: 0
 --- !u!114 &5146517719204797670
 MonoBehaviour:

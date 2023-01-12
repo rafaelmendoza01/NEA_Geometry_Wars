@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-
-    new Vector2 startsize = new Vector2(1, 1);
-    new Vector2 endsize = new Vector2(10, 10);
-    bool increase;
     private GameObject[] AllEnemies;
     private GameObject[] AllEnemyBullet;
-
+    private float distance;
+    private PlayerMovement player;
+    private RandomSpawner ToSetLevelCleared;
     private enum KnowWhenToIncrease
     {
         Increase,
@@ -19,19 +17,56 @@ public class Bomb : MonoBehaviour
     KnowWhenToIncrease IncreaseSizeState = KnowWhenToIncrease.Increase;
     void Start()
     {
-        increase = true;
-
+        player = FindObjectOfType<PlayerMovement>();
+        ToSetLevelCleared = FindObjectOfType<RandomSpawner>();
     }
 
     
     void Update()
-    {  
+    {
+        AllEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        AllEnemyBullet = GameObject.FindGameObjectsWithTag("EnemyBullet");
+
+        for (int i = 0; i < AllEnemyBullet.Length; i++)
+        {
+            if (AllEnemyBullet[i] != null)
+            {
+                Vector2 Diff = AllEnemyBullet[i].transform.position - transform.position;
+                distance = Diff.magnitude;
+
+                if (AllEnemyBullet[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
+                {
+                    Destroy(AllEnemyBullet[i]);
+                }
+            }
+        }
+
+        for (int i = 0; i < AllEnemies.Length; i++)
+        {
+            if (AllEnemies[i] != null)
+            {
+                Vector2 Diff = AllEnemies[i].transform.position - transform.position;
+                distance = Diff.magnitude;
+
+                if (AllEnemies[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
+                {
+                    Destroy(AllEnemies[i]);
+                    player.KillHistory++;
+                    if (player.KillHistory == ToSetLevelCleared.level)
+                    {
+                        ToSetLevelCleared.LevelCleared = true;
+                    }
+                }
+            }
+        }
+
         if (IncreaseSizeState == KnowWhenToIncrease.Increase)
         {
             IncreaseSizeState = KnowWhenToIncrease.Leave;
             StartCoroutine(IncreaseBombSize());
         }
     }
+
 
     IEnumerator IncreaseBombSize()
     {
@@ -40,8 +75,9 @@ public class Bomb : MonoBehaviour
         {
             transform.localScale = new Vector2(i += 0.1f, i += 0.1f);
             GetComponent<CircleCollider2D>().radius += 0.1f;
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.02f);
         }
+        Destroy(gameObject);
         yield break;
     }
 }
