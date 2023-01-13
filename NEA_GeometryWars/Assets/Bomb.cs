@@ -34,7 +34,7 @@ public class Bomb : MonoBehaviour
                 Vector2 Diff = AllEnemyBullet[i].transform.position - transform.position;
                 distance = Diff.magnitude;
 
-                if (AllEnemyBullet[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
+                if (AllEnemyBullet[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
                 {
                     Destroy(AllEnemyBullet[i]);
                 }
@@ -48,13 +48,14 @@ public class Bomb : MonoBehaviour
                 Vector2 Diff = AllEnemies[i].transform.position - transform.position;
                 distance = Diff.magnitude;
 
-                if (AllEnemies[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
+                if (AllEnemies[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
                 {
                     Destroy(AllEnemies[i]);
                     player.KillHistory++;
                     if (player.KillHistory == ToSetLevelCleared.level)
                     {
                         ToSetLevelCleared.LevelCleared = true;
+                        player.KillHistory = 0;
                     }
                 }
             }
@@ -71,10 +72,11 @@ public class Bomb : MonoBehaviour
     IEnumerator IncreaseBombSize()
     {
         float i = 1;
-        while (i < 20)
+        while (i < 25)
         {
-            transform.localScale = new Vector2(i += 0.1f, i += 0.1f);
-            GetComponent<CircleCollider2D>().radius += 0.1f;
+            i += 0.2f;
+            transform.localScale = new Vector2(i, i);
+            GetComponent<CircleCollider2D>().radius += 0.2f;
             yield return new WaitForSeconds(0.02f);
         }
         Destroy(gameObject);

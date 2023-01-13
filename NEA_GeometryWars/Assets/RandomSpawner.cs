@@ -76,7 +76,7 @@ public class RandomSpawner : MonoBehaviour
     //to store the number of any existing enemies.
 
     public GameObject[] enemyPrefabs;
-    SpawnState State = SpawnState.TimeToSpawn;
+    private SpawnState State = SpawnState.TimeToSpawn;
     //to store the types of enemies to be spawned as an array.
 
     private float TimeBetweenWaves = 0.9f;
@@ -109,22 +109,21 @@ public class RandomSpawner : MonoBehaviour
         LivingBullets = GameObject.FindGameObjectsWithTag("Bullet");
         EnemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
 
-        if(DoesBombStillExist != null)
+        /*if(DoesBombStillExist != null)
         {
             State = SpawnState.BombStillAround;
             StopAllCoroutines();
-        }
-
+        } */
 
         if (player != null)
         {
-            if (LevelCleared == true && State != SpawnState.BombStillAround) 
+            if (LevelCleared == true) 
             {
                 State = SpawnState.TimeToSpawn;
-            } 
+            }
             
 
-            if (State == SpawnState.TimeToSpawn)
+            if (State == SpawnState.TimeToSpawn && DoesBombStillExist == null)
             {
                 level++;
                 StartCoroutine(SpawnWave());
@@ -163,9 +162,9 @@ public class RandomSpawner : MonoBehaviour
     //purpose is to know when to spawn enemies
     IEnumerator SpawnWave()
     {
+        int NewSet = 0;
         int waves = level / 6;
         int NumEnemyToSpawnLast = level % 6;
-        int NewSet = 0;
         while ((NewSet < level) || (State == SpawnState.TimeToSpawn))
         {
             if (level < 5)
@@ -175,11 +174,7 @@ public class RandomSpawner : MonoBehaviour
                     SpawnEnemy(0, i);
                     State = SpawnState.Spawning;
                     NewSet++;
-                    yield return new WaitForSeconds(TimeBetweenEnemies);
-                    if (player == null)
-                    {
-                        yield break;
-                    }
+                    yield return new WaitForSeconds(TimeBetweenEnemies);            
                 }
             }
             else
@@ -193,16 +188,8 @@ public class RandomSpawner : MonoBehaviour
                         NewSet++;
                         State = SpawnState.Spawning;
                         yield return new WaitForSeconds(TimeBetweenEnemies);
-                        if (player == null)
-                        {
-                            yield break;
-                        }
                     }
                     yield return new WaitForSeconds(TimeBetweenWaves);
-                    if (player == null)
-                    {
-                        yield break;
-                    }
                 }
 
                 for (int i = 0; i < NumEnemyToSpawnLast; i++)
@@ -212,10 +199,6 @@ public class RandomSpawner : MonoBehaviour
                     State = SpawnState.Spawning;
                     NewSet++;
                     yield return new WaitForSeconds(TimeBetweenEnemies);
-                    if (player == null)
-                    {
-                        yield break;
-                    }
                 }
             }
         }

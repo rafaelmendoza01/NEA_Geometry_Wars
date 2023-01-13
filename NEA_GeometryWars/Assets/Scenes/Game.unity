@@ -694,6 +694,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 5146517719204797668, guid: 126fae78605e7e047a2702c760003f71, type: 3}
   Life: 0
   LevelCleared: 0
+  BombsUsed: 3
   Triangulation: {fileID: 1488652471}
   GW: {fileID: 1488652472}
   Tempest: {fileID: 1488652470}
@@ -1554,6 +1555,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5146517719204797665, guid: 126fae78605e7e047a2702c760003f71, type: 3}
+      propertyPath: bombPrefab
+      value: 
+      objectReference: {fileID: 8590636466752297474, guid: 8f04cff152a62ea4c8202532d1e59644, type: 3}
     - target: {fileID: 5146517719204797667, guid: 126fae78605e7e047a2702c760003f71, type: 3}
       propertyPath: m_RootOrder
       value: 2
