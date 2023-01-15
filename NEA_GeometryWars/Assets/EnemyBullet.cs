@@ -8,15 +8,41 @@ public class EnemyBullet : MonoBehaviour
     private float distance;
     private float EnemyBulletSpeed = 3f;
     private RandomSpawner ToGetPlayerStat;
+    private Vector2 ScreenBounds;
 
+    private bool OutOfScreen()
+    {
+        if (transform.position.x > ScreenBounds.x)
+        {
+            return true;
+        }
+        if (transform.position.x < -ScreenBounds.x)
+        {
+            return true;
+        }
+        if (transform.position.y > ScreenBounds.y)
+        {
+            return true;
+        }
+        if (transform.position.y < -ScreenBounds.y)
+        {
+            return true;
+        }
+
+        return false;
+    }
     private void Start()
     {
+        ScreenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         ToGetPlayerStat = GameObject.FindObjectOfType<RandomSpawner>();
     }
 
     void Update()
     {
-        
+        if (OutOfScreen())
+        {
+            Destroy(gameObject);
+        }
 
         player = GameObject.FindGameObjectWithTag("Player");
         Vector2 Difference = player.transform.position - transform.position;

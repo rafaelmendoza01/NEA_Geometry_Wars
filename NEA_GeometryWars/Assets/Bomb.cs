@@ -4,66 +4,66 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    private GameObject[] AllEnemies;
-    private GameObject[] AllEnemyBullet;
+    private GameObject[] allEnemies;
+    private GameObject[] allEnemyBullets;
     private float distance;
     private PlayerMovement player;
-    private RandomSpawner ToSetLevelCleared;
-    private enum KnowWhenToIncrease
+    private RandomSpawner toSetLevelCleared;
+    private enum eKnowWhenToIncrease
     {
         Increase,
         Leave,
     }
-    KnowWhenToIncrease IncreaseSizeState = KnowWhenToIncrease.Increase;
+    eKnowWhenToIncrease IncreaseSizeState = eKnowWhenToIncrease.Increase;
     void Start()
     {
         player = FindObjectOfType<PlayerMovement>();
-        ToSetLevelCleared = FindObjectOfType<RandomSpawner>();
+        toSetLevelCleared = FindObjectOfType<RandomSpawner>();
     }
 
     
     void Update()
     {
-        AllEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-        AllEnemyBullet = GameObject.FindGameObjectsWithTag("EnemyBullet");
+        allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        allEnemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
 
-        for (int i = 0; i < AllEnemyBullet.Length; i++)
+        for (int i = 0; i < allEnemyBullets.Length; i++)
         {
-            if (AllEnemyBullet[i] != null)
+            if (allEnemyBullets[i] != null)
             {
-                Vector2 Diff = AllEnemyBullet[i].transform.position - transform.position;
+                Vector2 Diff = allEnemyBullets[i].transform.position - transform.position;
                 distance = Diff.magnitude;
 
-                if (AllEnemyBullet[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
+                if (allEnemyBullets[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
                 {
-                    Destroy(AllEnemyBullet[i]);
+                    Destroy(allEnemyBullets[i]);
                 }
             }
         }
 
-        for (int i = 0; i < AllEnemies.Length; i++)
+        for (int i = 0; i < allEnemies.Length; i++)
         {
-            if (AllEnemies[i] != null)
+            if (allEnemies[i] != null)
             {
-                Vector2 Diff = AllEnemies[i].transform.position - transform.position;
+                Vector2 Diff = allEnemies[i].transform.position - transform.position;
                 distance = Diff.magnitude;
 
-                if (AllEnemies[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
+                if (allEnemies[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
                 {
-                    Destroy(AllEnemies[i]);
+                    Destroy(allEnemies[i]);
                     player.KillHistory++;
-                    if (player.KillHistory == ToSetLevelCleared.level)
+                    if (player.KillHistory == toSetLevelCleared.level)
                     {
-                        ToSetLevelCleared.LevelCleared = true;
+                        toSetLevelCleared.LevelCleared = true;
                         player.KillHistory = 0;
                     }
                 }
             }
         }
 
-        if (IncreaseSizeState == KnowWhenToIncrease.Increase)
+        if (IncreaseSizeState == eKnowWhenToIncrease.Increase)
         {
-            IncreaseSizeState = KnowWhenToIncrease.Leave;
+            IncreaseSizeState = eKnowWhenToIncrease.Leave;
             StartCoroutine(IncreaseBombSize());
         }
     }
@@ -71,14 +71,18 @@ public class Bomb : MonoBehaviour
 
     IEnumerator IncreaseBombSize()
     {
-        float i = 1;
-        while (i < 25)
+        const float scale_increment = 0.2f;
+        const float scale_interval  = 0.02f;
+
+        float i = 1f;
+        while (i < 25f)
         {
-            i += 0.2f;
+            i += scale_increment;
             transform.localScale = new Vector2(i, i);
-            GetComponent<CircleCollider2D>().radius += 0.2f;
-            yield return new WaitForSeconds(0.02f);
+            GetComponent<CircleCollider2D>().radius += scale_increment;
+            yield return new WaitForSeconds(scale_interval);
         }
+        toSetLevelCleared.State = RandomSpawner.SpawnState.BombRecentlyDestroyed;
         Destroy(gameObject);
         yield break;
     }

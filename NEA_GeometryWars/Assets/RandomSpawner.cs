@@ -18,6 +18,9 @@ public class RandomSpawner : MonoBehaviour
     public int Life;
     public bool LevelCleared = true;
 
+    private int SpawnRemaining;
+    private int NewSet;
+
     public int BombsUsed = 3;
 
     private OptionsMenu TheirChosenSettings;
@@ -57,11 +60,12 @@ public class RandomSpawner : MonoBehaviour
         WaitingToDie,
     }
 
-    private enum SpawnState
+    public enum SpawnState
     {
         TimeToSpawn, 
         Spawning,
         BombStillAround,
+        BombRecentlyDestroyed,
     }
     //to determine state of enemies, whether they need to be spawned etc.
 
@@ -76,11 +80,11 @@ public class RandomSpawner : MonoBehaviour
     //to store the number of any existing enemies.
 
     public GameObject[] enemyPrefabs;
-    private SpawnState State = SpawnState.TimeToSpawn;
+    public SpawnState State = SpawnState.TimeToSpawn;
     //to store the types of enemies to be spawned as an array.
 
-    private float TimeBetweenWaves = 0.9f;
-    private float TimeBetweenEnemies = 0.3f;
+    private float TimeBetweenWaves = 0.6f;
+    private float TimeBetweenEnemies = 0.1f;
     //to wait correct amount of time between each enemy and wave of enemies
 
     private void Start()
@@ -109,25 +113,38 @@ public class RandomSpawner : MonoBehaviour
         LivingBullets = GameObject.FindGameObjectsWithTag("Bullet");
         EnemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
 
-        /*if(DoesBombStillExist != null)
+        if (DoesBombStillExist != null)
         {
             State = SpawnState.BombStillAround;
             StopAllCoroutines();
-        } */
+        }
 
         if (player != null)
         {
+            if(player.KillHistory == level)
+            {
+                LevelCleared = true;
+            }
+
             if (LevelCleared == true) 
             {
                 State = SpawnState.TimeToSpawn;
             }
             
 
-            if (State == SpawnState.TimeToSpawn && DoesBombStillExist == null)
+            if (State == SpawnState.TimeToSpawn && DoesBombStillExist == null && LevelCleared)
             {
                 level++;
-                StartCoroutine(SpawnWave());
+                StartCoroutine(SpawnWave(level));
                 LevelCleared = false;
+            }
+            if (State == SpawnState.BombRecentlyDestroyed && DoesBombStillExist == null && !LevelCleared)
+            {
+                StartCoroutine(SpawnWave(SpawnRemaining));
+            }
+            if (State == SpawnState.BombRecentlyDestroyed && DoesBombStillExist == null && LevelCleared)
+            {
+                StartCoroutine(SpawnWave(level));
             }
         }
         else
@@ -150,7 +167,7 @@ public class RandomSpawner : MonoBehaviour
             {
                 StopAllCoroutines();
                 Instantiate(playerPrefab, transform.position, Quaternion.identity);
-                StartCoroutine(SpawnWave());
+                StartCoroutine(SpawnWave(level));
             }
             else
             {
@@ -160,11 +177,11 @@ public class RandomSpawner : MonoBehaviour
     }
 
     //purpose is to know when to spawn enemies
-    IEnumerator SpawnWave()
+    IEnumerator SpawnWave(int SpawnSet)
     {
-        int NewSet = 0;
-        int waves = level / 6;
-        int NumEnemyToSpawnLast = level % 6;
+        NewSet = 0;
+        int waves = SpawnSet / 6;
+        int NumEnemyToSpawnLast = SpawnSet % 6;
         while ((NewSet < level) || (State == SpawnState.TimeToSpawn))
         {
             if (level < 5)
@@ -174,6 +191,7 @@ public class RandomSpawner : MonoBehaviour
                     SpawnEnemy(0, i);
                     State = SpawnState.Spawning;
                     NewSet++;
+                    SpawnRemaining = level - NewSet;
                     yield return new WaitForSeconds(TimeBetweenEnemies);            
                 }
             }
@@ -186,6 +204,7 @@ public class RandomSpawner : MonoBehaviour
                         int Type = Random.Range(0, enemyPrefabs.Length);
                         SpawnEnemy(Type, j);
                         NewSet++;
+                        SpawnRemaining = level - NewSet;
                         State = SpawnState.Spawning;
                         yield return new WaitForSeconds(TimeBetweenEnemies);
                     }
@@ -198,17 +217,16 @@ public class RandomSpawner : MonoBehaviour
                     SpawnEnemy(Type, i);
                     State = SpawnState.Spawning;
                     NewSet++;
+                    SpawnRemaining = level - NewSet;
                     yield return new WaitForSeconds(TimeBetweenEnemies);
                 }
             }
         }
-        //State = SpawnState.Waiting;
         yield break;
     }  
 
     void SpawnEnemy(int TypeOfEnemy, int WhereToSpawn)
     {
         Instantiate(enemyPrefabs[TypeOfEnemy], SpawnPoints[WhereToSpawn].position, Quaternion.identity);
-    }
-    
+    }  
 }

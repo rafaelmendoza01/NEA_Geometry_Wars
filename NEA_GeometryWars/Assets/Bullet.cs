@@ -16,7 +16,8 @@ public class Bullet : MonoBehaviour
 
     [SerializeField]
     private GameObject ExplodeEffect;
-    
+
+    private Vector2 ScreenBounds;
 
     private void CreateExplosionFX()
     {
@@ -29,15 +30,19 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
+        ScreenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         player = GameObject.FindObjectOfType<PlayerMovement>();
         ToGetlevel = GameObject.FindObjectOfType<RandomSpawner>();
     }
     private void Update()
     {
-
-
         AllEnemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
         AllEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (OutOfScreen())
+        {
+            Destroy(gameObject);
+        }
 
         for (int i = 0; i < AllEnemies.Length; i++)
         {
@@ -75,14 +80,33 @@ public class Bullet : MonoBehaviour
                 Destroy(AnEnemyBullet);
                 Destroy(gameObject);
             }
-        }
-
-        
+        } 
     }
 
     private void FixedUpdate()
     {
         transform.Translate(Vector2.up * FireForce * Time.deltaTime);
+    }
 
+    private bool OutOfScreen()
+    {
+        if(transform.position.x > ScreenBounds.x)
+        {
+            return true;
+        }
+        if(transform.position.x < -ScreenBounds.x)
+        {
+            return true;
+        }
+        if (transform.position.y > ScreenBounds.y)
+        {
+            return true;
+        }
+        if (transform.position.y < -ScreenBounds.y)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
