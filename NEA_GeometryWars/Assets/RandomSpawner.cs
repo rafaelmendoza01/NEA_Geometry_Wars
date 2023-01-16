@@ -37,8 +37,15 @@ public class RandomSpawner : MonoBehaviour
     private AudioSource DeathSFX;
     [SerializeField]
     private AudioSource ShootingSFX;
+    [SerializeField]
+    private AudioSource BombSFX;
 
     private GameObject DoesBombStillExist;
+
+    public void PlayBombSFX()
+    {
+        BombSFX.Play();
+    }
 
     public void PlayDeathSFX()
     {
@@ -130,26 +137,29 @@ public class RandomSpawner : MonoBehaviour
             {
                 State = SpawnState.TimeToSpawn;
             }
-            
 
-            if (State == SpawnState.TimeToSpawn && DoesBombStillExist == null && LevelCleared)
+            if (DoesBombStillExist == null)
             {
-                level++;
-                StartCoroutine(SpawnWave(level));
-                LevelCleared = false;
-            }
-            if (State == SpawnState.BombRecentlyDestroyed && DoesBombStillExist == null && !LevelCleared)
-            {
-                StartCoroutine(SpawnWave(SpawnRemaining));
-            }
-            if (State == SpawnState.BombRecentlyDestroyed && DoesBombStillExist == null && LevelCleared)
-            {
-                StartCoroutine(SpawnWave(level));
+                if (State == SpawnState.TimeToSpawn && LevelCleared)
+                {
+                    level++;
+                    StartCoroutine(SpawnWave(level));
+                    LevelCleared = false;
+                }
+                if (State == SpawnState.BombRecentlyDestroyed && !LevelCleared)
+                {
+                    StartCoroutine(SpawnWave(SpawnRemaining));
+                    LevelCleared = false;
+                }
+                if (State == SpawnState.BombRecentlyDestroyed && LevelCleared)
+                {
+                    StartCoroutine(SpawnWave(level++));
+                    LevelCleared = false;
+                }
             }
         }
         else
         {
-
             for(int i = 0; i < LivingEnemies.Length; i++)
             {
                 Destroy(LivingEnemies[i]);
@@ -182,7 +192,7 @@ public class RandomSpawner : MonoBehaviour
         NewSet = 0;
         int waves = SpawnSet / 6;
         int NumEnemyToSpawnLast = SpawnSet % 6;
-        while ((NewSet < level) || (State == SpawnState.TimeToSpawn))
+        while (NewSet < SpawnSet) //|| (State == SpawnState.TimeToSpawn))
         {
             if (level < 5)
             {
@@ -222,6 +232,7 @@ public class RandomSpawner : MonoBehaviour
                 }
             }
         }
+
         yield break;
     }  
 

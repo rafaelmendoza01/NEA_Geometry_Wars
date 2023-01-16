@@ -88,6 +88,8 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector2.up * FireForce * Time.deltaTime);
     }
 
+    //to destroy the gameobject once it is out of screen to
+    //prevent too many objects existing and causing potential lag
     private bool OutOfScreen()
     {
         if(transform.position.x > ScreenBounds.x)

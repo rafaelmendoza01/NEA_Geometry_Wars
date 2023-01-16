@@ -19,6 +19,7 @@ public class Bomb : MonoBehaviour
     {
         player = FindObjectOfType<PlayerMovement>();
         toSetLevelCleared = FindObjectOfType<RandomSpawner>();
+        toSetLevelCleared.PlayBombSFX();
     }
 
     

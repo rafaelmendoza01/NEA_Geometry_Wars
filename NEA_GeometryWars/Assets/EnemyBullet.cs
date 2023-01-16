@@ -10,6 +10,9 @@ public class EnemyBullet : MonoBehaviour
     private RandomSpawner ToGetPlayerStat;
     private Vector2 ScreenBounds;
 
+
+    //to destroy the gameobject once it is out of screen to
+    //prevent too many objects existing and causing potential lag
     private bool OutOfScreen()
     {
         if (transform.position.x > ScreenBounds.x)
@@ -54,8 +57,7 @@ public class EnemyBullet : MonoBehaviour
             ToGetPlayerStat.PlayerSpawnState = RandomSpawner.PlayerJustSpawned.SpawnPlayerAgain;
             ToGetPlayerStat.PlayDeathSFX();
             Destroy(player);
-            Destroy(gameObject);
-            
+            Destroy(gameObject);         
         }
     }
 
