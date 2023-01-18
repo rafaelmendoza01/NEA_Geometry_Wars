@@ -197,7 +197,7 @@ public class RandomSpawner : MonoBehaviour
         {
             if (level < 5)
             {
-                for (int i = 0; i < level; i++)
+                for (int i = 0; i < SpawnSet; i++)
                 {
                     SpawnEnemy(0, i);
                     State = SpawnState.Spawning;
