@@ -33,13 +33,13 @@ public class PlayerMovement : MonoBehaviour
         AbombStillExist = GameObject.FindGameObjectWithTag("Bomb");
 
         //for firing bullets
-        if (Input.GetMouseButtonDown(0) && OptionsMenu.MouseToShoot == true)
+        if (Input.GetMouseButtonDown(0) && OptionsMenu.MouseToShoot == true && !PauseMenu.GameIsPaused)
         {
             GetStats.PlayShootingSound();
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
         }
 
-        if(Input.GetKeyDown(KeyCode.O) && OptionsMenu.KeyBoardToShoot == true)
+        if(Input.GetKeyDown(KeyCode.O) && OptionsMenu.KeyBoardToShoot == true && !PauseMenu.GameIsPaused)
         {
             GetStats.PlayShootingSound();
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
