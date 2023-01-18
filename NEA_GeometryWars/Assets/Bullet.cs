@@ -57,6 +57,7 @@ public class Bullet : MonoBehaviour
                     player.KillHistory++;
                     ToGetlevel.PlayExplodeSFX();
                     Destroy(Enemy);
+                    ToGetlevel.CurrentScore += 10;
                     if (player.KillHistory == ToGetlevel.level)
                     {
                         ToGetlevel.LevelCleared = true;
@@ -75,6 +76,7 @@ public class Bullet : MonoBehaviour
             distance = Diff.magnitude;
             if(AnEnemyBullet.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
             {
+                ToGetlevel.CurrentScore += 5;
                 ToGetlevel.PlayExplodeSFX();
                 CreateExplosionFX();
                 Destroy(AnEnemyBullet);

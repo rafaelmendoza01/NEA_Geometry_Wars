@@ -12,22 +12,14 @@ public class StatsUpdate : MonoBehaviour
     private GameObject[] hearts;
     [SerializeField]
     private GameObject[] bombs;
+    [SerializeField]
 
-    /*private enum LivesNum
-    {
-        waiting,
-        Life2NotYetDestroyed,
-        Life1NotYetDestroyed,
-        Life0NotYetDestroyed,
-    } */
-
-    //LivesNum CurrentLifeState = LivesNum.waiting;
 
     //To find the text mesh objects so that the stats can be updated.
     void Start()
     {
         spawnerToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
-        DisplayLevel = GameObject.FindObjectOfType<TextMeshProUGUI>();
+        DisplayLevel = GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame

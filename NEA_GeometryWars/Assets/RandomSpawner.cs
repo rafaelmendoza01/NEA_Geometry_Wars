@@ -22,6 +22,7 @@ public class RandomSpawner : MonoBehaviour
     private int NewSet;
 
     public int BombsUsed = 3;
+    public int CurrentScore;
 
     private OptionsMenu TheirChosenSettings;
 
@@ -96,6 +97,7 @@ public class RandomSpawner : MonoBehaviour
 
     private void Start()
     {
+        CurrentScore = 0;
         Life = 3;
         if (OptionsMenu.Music3Wanted == true)
         {
@@ -108,8 +110,7 @@ public class RandomSpawner : MonoBehaviour
         else
         {
             GW.Play();
-        }
-   
+        } 
     }
 
     void Update()
@@ -232,7 +233,6 @@ public class RandomSpawner : MonoBehaviour
                 }
             }
         }
-
         yield break;
     }  
 

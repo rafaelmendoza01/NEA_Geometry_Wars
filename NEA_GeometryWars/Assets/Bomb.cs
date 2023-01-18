@@ -37,6 +37,7 @@ public class Bomb : MonoBehaviour
 
                 if (allEnemyBullets[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
                 {
+                    toSetLevelCleared.CurrentScore += 5;
                     Destroy(allEnemyBullets[i]);
                 }
             }
@@ -53,6 +54,7 @@ public class Bomb : MonoBehaviour
                 {
                     Destroy(allEnemies[i]);
                     player.KillHistory++;
+                    toSetLevelCleared.CurrentScore += 10;
                     if (player.KillHistory == toSetLevelCleared.level)
                     {
                         toSetLevelCleared.LevelCleared = true;
