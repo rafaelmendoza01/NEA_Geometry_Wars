@@ -7,7 +7,6 @@ public class Bomb : MonoBehaviour
     private GameObject[] allEnemies;
     private GameObject[] allEnemyBullets;
     private float distance;
-    private PlayerMovement player;
     private RandomSpawner toSetLevelCleared;
     private enum eKnowWhenToIncrease
     {
@@ -17,7 +16,6 @@ public class Bomb : MonoBehaviour
     eKnowWhenToIncrease IncreaseSizeState = eKnowWhenToIncrease.Increase;
     void Start()
     {
-        player = FindObjectOfType<PlayerMovement>();
         toSetLevelCleared = FindObjectOfType<RandomSpawner>();
         toSetLevelCleared.PlayBombSFX();
     }
@@ -53,12 +51,12 @@ public class Bomb : MonoBehaviour
                 if (allEnemies[i].GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius >= distance)
                 {
                     Destroy(allEnemies[i]);
-                    player.KillHistory++;
+                    PlayerMovement.KillsForLevel++;
                     toSetLevelCleared.CurrentScore += 10;
-                    if (player.KillHistory == toSetLevelCleared.level)
+                    if (PlayerMovement.KillsForLevel == toSetLevelCleared.level)
                     {
                         toSetLevelCleared.LevelCleared = true;
-                        player.KillHistory = 0;
+                        PlayerMovement.KillsForLevel = 0;
                     }
                 }
             }

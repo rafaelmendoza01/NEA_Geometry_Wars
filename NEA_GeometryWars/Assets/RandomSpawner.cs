@@ -8,6 +8,7 @@ public class RandomSpawner : MonoBehaviour
 {
     //source: https://youtu.be/Vrld13ypX_I
 
+
     [SerializeField]
     private Transform[] SpawnPoints;
     //to set up spawn points for enemies as an array
@@ -21,6 +22,7 @@ public class RandomSpawner : MonoBehaviour
     private int SpawnRemaining;
     private int NewSet;
 
+    public int PlayerKillsAcrossAllLevel;
     public int BombsUsed = 3;
     public int CurrentScore;
 
@@ -129,7 +131,7 @@ public class RandomSpawner : MonoBehaviour
 
         if (player != null)
         {
-            if(player.KillHistory == level)
+            if(PlayerMovement.KillsForLevel == level)
             {
                 LevelCleared = true;
             }
@@ -178,7 +180,7 @@ public class RandomSpawner : MonoBehaviour
             {
                 StopAllCoroutines();
                 Instantiate(playerPrefab, transform.position, Quaternion.identity);
-                StartCoroutine(SpawnWave(level));
+                StartCoroutine(SpawnWave(level - PlayerMovement.KillsForLevel));
             }
             else
             {
@@ -189,11 +191,11 @@ public class RandomSpawner : MonoBehaviour
 
     //purpose is to know when to spawn enemies
     IEnumerator SpawnWave(int SpawnSet)
-    {
+    { 
         NewSet = 0;
         int waves = SpawnSet / 6;
         int NumEnemyToSpawnLast = SpawnSet % 6;
-        while (NewSet < SpawnSet) //|| (State == SpawnState.TimeToSpawn))
+        while (NewSet < SpawnSet)
         {
             if (level < 5)
             {

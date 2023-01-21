@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
@@ -7,7 +8,9 @@ public class PauseMenu : MonoBehaviour
     //source: https://youtu.be/JivuXdrIHK0
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
-    
+    public GameObject saveMenuUI;
+    private RandomSpawner ToGetScore;
+    private int Score = 0;
 
     void Update()
     {
@@ -45,8 +48,9 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    public void SaveGame()
+    public void BringUpLeaderBoard()
     {
-
+        pauseMenuUI.SetActive(false);
+        saveMenuUI.SetActive(true);
     }
 }

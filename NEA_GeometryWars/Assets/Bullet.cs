@@ -9,7 +9,6 @@ public class Bullet : MonoBehaviour
     private GameObject[] AllEnemies;
     private float distance;
     private float FireForce = 20f;
-    private PlayerMovement player;
     private RandomSpawner ToGetlevel;
     private GameObject[] AllEnemyBullets;
     private GameObject AnEnemyBullet;
@@ -31,7 +30,6 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         ScreenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        player = GameObject.FindObjectOfType<PlayerMovement>();
         ToGetlevel = GameObject.FindObjectOfType<RandomSpawner>();
     }
     private void Update()
@@ -54,14 +52,14 @@ public class Bullet : MonoBehaviour
                 if (Enemy.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
                 {
                     CreateExplosionFX();
-                    player.KillHistory++;
+                    PlayerMovement.KillsForLevel++;
                     ToGetlevel.PlayExplodeSFX();
                     Destroy(Enemy);
                     ToGetlevel.CurrentScore += 10;
-                    if (player.KillHistory == ToGetlevel.level)
+                    if (PlayerMovement.KillsForLevel == ToGetlevel.level)
                     {
                         ToGetlevel.LevelCleared = true;
-                        player.KillHistory = 0;
+                        PlayerMovement.KillsForLevel = 0;
                     }
                     Destroy(gameObject);
                 }

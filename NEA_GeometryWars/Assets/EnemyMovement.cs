@@ -3,26 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
-
     private RandomSpawner NeedToGetStats;
     private float moveSpeed = 2f;
-    private float increaseSpeedBy = 0.5f;
+    private float increaseSpeedBy = 0.2f;
     private GameObject player;
     private float radius;
     private float distance;
 
+
+    //purpose of the enum is to ensure that the speed of the enemy isnt constantly increased every frame
     private enum ToIncreaseSpeed
     {
         JustIncrease,
         Waiting,
-        LevelJustChanged,
+        StillSame,
     }
-    ToIncreaseSpeed CurrentState = ToIncreaseSpeed.Waiting;
+    ToIncreaseSpeed CurrentState = ToIncreaseSpeed.Waiting; 
+
+
+    private void Start()
+    {
+        NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
+        if (NeedToGetStats.level % 5 == 0)
+        {
+            CurrentState = ToIncreaseSpeed.Waiting;
+        }
+    }
 
     private void Update()
     {
-        
-        NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
         player = GameObject.FindGameObjectWithTag("Player");
         radius = GetComponent<CircleCollider2D>().radius;
 
@@ -31,22 +40,17 @@ public class EnemyMovement : MonoBehaviour
             Vector2 Diff = player.GetComponent<Transform>().position - GetComponent<Transform>().position;
             distance = Diff.magnitude;
         }
-        
-        if (NeedToGetStats.level % 5 != 0)
-        {
-            CurrentState = ToIncreaseSpeed.Waiting;
-        }
 
         if (NeedToGetStats.level % 5 == 0 && CurrentState == ToIncreaseSpeed.Waiting)
         {
-            CurrentState = ToIncreaseSpeed.LevelJustChanged;
+            CurrentState = ToIncreaseSpeed.StillSame;
         }
 
-        if (CurrentState == ToIncreaseSpeed.LevelJustChanged)
+        if (CurrentState == ToIncreaseSpeed.StillSame)
         {
-            moveSpeed += (NeedToGetStats.level/6 * increaseSpeedBy);
+            moveSpeed += (NeedToGetStats.level/5 * increaseSpeedBy);
             CurrentState = ToIncreaseSpeed.JustIncrease;
-        }
+        } 
     }
 
     private void FixedUpdate()

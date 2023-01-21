@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform Firepoint;
     private float AngleSpeed = 900f;
-    public int KillHistory = 0;
+    public static int KillsForLevel = 0;
     private RandomSpawner GetStats;
     private GameObject AbombStillExist;
 
