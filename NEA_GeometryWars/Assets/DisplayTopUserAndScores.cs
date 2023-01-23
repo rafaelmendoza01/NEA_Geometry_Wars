@@ -9,9 +9,9 @@ public class DisplayTopUserAndScores : MonoBehaviour
     private string Filename = "GW_Scores.txt";
     private RandomSpawner ToGetLevel;
     [SerializeField]
-    private TextMeshProUGUI ToDisplayScore;
-    protected int[] score = new int[3];
-    protected string[] names = new string[3];
+    private TextMeshProUGUI ToDisplayTopScore;
+    List<int> score = new List<int>();
+    List<string> names = new List<string>();
 
     public struct ScoreAndUsername
     {
@@ -23,22 +23,21 @@ public class DisplayTopUserAndScores : MonoBehaviour
             score = Score;
         }
     }
-    ScoreAndUsername[] Top3Scores = new ScoreAndUsername[3];
+    List<ScoreAndUsername> Top3Scores = new List<ScoreAndUsername>();
     
 
     void Start()
     {
-        if (!File.Exists(Filename))
-        {
-            File.Create(Filename);
-        }
+        
     }
+
+  
 
     private void BubbleSort()
     {
-        for (int x = 0; x < Top3Scores.Length; x++)
+        for (int x = 0; x < Top3Scores.Count; x++)
         {
-            for (int y = 0; y < Top3Scores.Length - x; y++)
+            for (int y = 0; y < Top3Scores.Count - x; y++)
             {
                 if (Top3Scores[y].score > Top3Scores[y+1].score)
                 {
@@ -52,6 +51,12 @@ public class DisplayTopUserAndScores : MonoBehaviour
 
     public void GetTheirUsername(string Username)
     {
+        if (!File.Exists(Filename))
+        {
+            File.Create(Filename);
+            File.AppendAllText(Filename, ToGetLevel.CurrentScore.ToString());
+            File.AppendAllText(Filename, Username);
+        }
         StreamReader ReadScoresAndUsername = new StreamReader(Filename);
         string line;
         int i = 0;
@@ -68,10 +73,11 @@ public class DisplayTopUserAndScores : MonoBehaviour
             }
         }
 
-        while(i < score.Length){
+        while(i < score.Count){
             Top3Scores[i] = new ScoreAndUsername(names[i], score[i]);
             i++;
         }
+
 
         BubbleSort();
 
@@ -83,11 +89,23 @@ public class DisplayTopUserAndScores : MonoBehaviour
         BubbleSort();
 
         File.Create(Filename);
-        for(int x = 0; x < Top3Scores.Length; x++)
+        for(int x = 0; x < Top3Scores.Count; x++)
         {
             StreamWriter sw = new StreamWriter(Filename);
             sw.WriteLine(Top3Scores[x].score);
             sw.WriteLine(Top3Scores[x].Name);
+        }
+
+        for (int j = 0; j < Top3Scores.Count; j++)
+        {
+            if (j == 0)
+            {
+                ToDisplayTopScore.text = "1. " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
+            }
+            else
+            {
+                ToDisplayTopScore.text = "\n" + j + ". " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
+            }
         }
     }
 }

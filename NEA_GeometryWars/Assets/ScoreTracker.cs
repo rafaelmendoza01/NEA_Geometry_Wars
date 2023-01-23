@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ScoreTracker : DisplayTopUserAndScores
+public class ScoreTracker : MonoBehaviour
 { 
     private int Score;
-    private RandomSpawner ToGetScore;
+    private RandomSpawner ToGetStats;
     private TextMeshProUGUI DisplayScore;
     void Start()
     {
         Score = 0;
-        ToGetScore = GameObject.FindObjectOfType<RandomSpawner>();
+        ToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
         DisplayScore = GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
     {
-        Score = ToGetScore.CurrentScore;
+        Score = ToGetStats.CurrentScore;
         DisplayScore.text = "Score: " + Score;
     }
 }
