@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ScoreTracker : MonoBehaviour
-{
+public class ScoreTracker : DisplayTopUserAndScores
+{ 
     private int Score;
     private RandomSpawner ToGetScore;
     private TextMeshProUGUI DisplayScore;
@@ -19,6 +19,5 @@ public class ScoreTracker : MonoBehaviour
     {
         Score = ToGetScore.CurrentScore;
         DisplayScore.text = "Score: " + Score;
-        
     }
 }
