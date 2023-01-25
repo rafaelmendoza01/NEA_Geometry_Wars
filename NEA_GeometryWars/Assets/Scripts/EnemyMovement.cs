@@ -21,7 +21,7 @@ public class EnemyMovement : MonoBehaviour
     ToIncreaseSpeed CurrentState = ToIncreaseSpeed.Waiting; 
 
 
-    private void Start()
+    void Start()
     {
         NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
         if (NeedToGetStats.level % 5 == 0)
@@ -30,7 +30,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         radius = GetComponent<CircleCollider2D>().radius;
@@ -53,7 +53,7 @@ public class EnemyMovement : MonoBehaviour
         } 
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (player != null)
         {

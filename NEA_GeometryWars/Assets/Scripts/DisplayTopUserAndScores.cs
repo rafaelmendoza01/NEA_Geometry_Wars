@@ -24,14 +24,6 @@ public class DisplayTopUserAndScores : MonoBehaviour
         }
     }
     List<ScoreAndUsername> Top3Scores = new List<ScoreAndUsername>();
-    
-
-    void Start()
-    {
-        
-    }
-
-  
 
     private void BubbleSort()
     {
@@ -51,11 +43,14 @@ public class DisplayTopUserAndScores : MonoBehaviour
 
     public void GetTheirUsername(string Username)
     {
+        bool justCreated = false;
+
         if (!File.Exists(Filename))
         {
             File.Create(Filename);
             File.AppendAllText(Filename, ToGetLevel.CurrentScore.ToString());
             File.AppendAllText(Filename, Username);
+            justCreated = true;
         }
         StreamReader ReadScoresAndUsername = new StreamReader(Filename);
         string line;
@@ -64,29 +59,35 @@ public class DisplayTopUserAndScores : MonoBehaviour
         {
             if(int.TryParse(line, out int TheirScore))
             {
-                score[i] = TheirScore;
+                score.Add(TheirScore);
             }
             else
             {
-               names[i] = line;
+                names.Add(line);
                 i++;
             }
         }
 
+        i = 0;
         while(i < score.Count){
-            Top3Scores[i] = new ScoreAndUsername(names[i], score[i]);
+            Top3Scores.Add(new ScoreAndUsername(names[i], score[i]));
             i++;
         }
 
-
-        BubbleSort();
-
-        if(ToGetLevel.CurrentScore > Top3Scores[0].score)
+        if (Top3Scores.Count > 1)
         {
-            Top3Scores[0] = new ScoreAndUsername(Username, ToGetLevel.CurrentScore);
-        }
+            BubbleSort();
 
-        BubbleSort();
+            if (!justCreated)
+            {
+                if (ToGetLevel.CurrentScore > Top3Scores[0].score)
+                {
+                    Top3Scores.Add(new ScoreAndUsername(Username, ToGetLevel.CurrentScore));
+                }
+            }
+
+            BubbleSort();
+        }
 
         File.Create(Filename);
         for(int x = 0; x < Top3Scores.Count; x++)
