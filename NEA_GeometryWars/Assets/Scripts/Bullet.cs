@@ -7,16 +7,16 @@ public class Bullet : MonoBehaviour
 {
     private GameObject Enemy;
     private GameObject[] AllEnemies;
-    private float distance;
-    private float FireForce = 20f;
-    private RandomSpawner ToGetlevel;
+    protected float distance;
+    protected float Speed = 20f;
+    protected RandomSpawner ToGetStats;
     private GameObject[] AllEnemyBullets;
     private GameObject AnEnemyBullet;
 
     [SerializeField]
     private GameObject ExplodeEffect;
 
-    private Vector2 ScreenBounds;
+    protected Vector2 ScreenBounds;
 
     private void CreateExplosionFX()
     {
@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         ScreenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        ToGetlevel = GameObject.FindObjectOfType<RandomSpawner>();
+        ToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
     }
     private void Update()
     {
@@ -53,12 +53,12 @@ public class Bullet : MonoBehaviour
                 {
                     CreateExplosionFX();
                     PlayerMovement.KillsForLevel++;
-                    ToGetlevel.PlayExplodeSFX();
+                    ToGetStats.PlayExplodeSFX();
                     Destroy(Enemy);
-                    ToGetlevel.CurrentScore += 10;
-                    if (PlayerMovement.KillsForLevel == ToGetlevel.level)
+                    ToGetStats.CurrentScore += 10;
+                    if (PlayerMovement.KillsForLevel == ToGetStats.level)
                     {
-                        ToGetlevel.LevelCleared = true;
+                        ToGetStats.LevelCleared = true;
                         PlayerMovement.KillsForLevel = 0;
                     }
                     Destroy(gameObject);
@@ -74,8 +74,8 @@ public class Bullet : MonoBehaviour
             distance = Diff.magnitude;
             if(AnEnemyBullet.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
             {
-                ToGetlevel.CurrentScore += 5;
-                ToGetlevel.PlayExplodeSFX();
+                ToGetStats.CurrentScore += 5;
+                ToGetStats.PlayExplodeSFX();
                 CreateExplosionFX();
                 Destroy(AnEnemyBullet);
                 Destroy(gameObject);
@@ -83,14 +83,14 @@ public class Bullet : MonoBehaviour
         } 
     }
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
-        transform.Translate(Vector2.up * FireForce * Time.deltaTime);
+        transform.Translate(Vector2.up * Speed * Time.deltaTime);
     }
 
     //to destroy the gameobject once it is out of screen to
     //prevent too many objects existing and causing potential lag
-    private bool OutOfScreen()
+    protected bool OutOfScreen()
     {
         if(transform.position.x > ScreenBounds.x)
         {

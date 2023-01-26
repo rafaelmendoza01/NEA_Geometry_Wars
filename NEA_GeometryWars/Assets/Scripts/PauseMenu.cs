@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
     //source: https://youtu.be/JivuXdrIHK0
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
-    public GameObject saveMenuUI;
+    public GameObject scoreMenuUI;
     private RandomSpawner ToGetScore;
     private int Score = 0;
 
@@ -44,13 +44,13 @@ public class PauseMenu : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1f;
-        GameIsPaused=false;
+        GameIsPaused = false;
         SceneManager.LoadScene("Menu");
     }
 
     public void BringUpLeaderBoard()
     {
         pauseMenuUI.SetActive(false);
-        saveMenuUI.SetActive(true);
+        scoreMenuUI.SetActive(true);
     }
 }
