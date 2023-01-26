@@ -54,7 +54,6 @@ public class RandomSpawner : MonoBehaviour
     {
         DeathSFX.Play();
     }
-
     public void PlayShootingSound()
     {
         ShootingSFX.Play();

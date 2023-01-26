@@ -67,6 +67,7 @@ public class DisplayTopUserAndScores : MonoBehaviour
                 i++;
             }
         }
+        ReadScoresAndUsername.Close();
 
         i = 0;
         while(i < score.Count){
@@ -89,13 +90,17 @@ public class DisplayTopUserAndScores : MonoBehaviour
             BubbleSort();
         }
 
-        File.Create(Filename);
-        for(int x = 0; x < Top3Scores.Count; x++)
+        File.Delete(Filename);
+        using (StreamWriter sw = new StreamWriter(Filename))
         {
-            StreamWriter sw = new StreamWriter(Filename);
-            sw.WriteLine(Top3Scores[x].score);
-            sw.WriteLine(Top3Scores[x].Name);
+            for (int x = 0; x < Top3Scores.Count; x++)
+            {
+                sw.WriteLine(Top3Scores[x].score);
+                sw.WriteLine(Top3Scores[x].Name);
+            }
+            sw.Close();
         }
+        
 
         for (int j = 0; j < Top3Scores.Count; j++)
         {
