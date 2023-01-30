@@ -6,7 +6,11 @@ public class EnemyShooting : MonoBehaviour
 {
     private GameObject player;
     private float AngleSpeed = 400f;
-    public EnemyWeapon WeaponOfEnemy;
+
+    [SerializeField]
+    private Transform EnemyFirepoint;
+    [SerializeField]
+    private GameObject EnemBulletPrefab;
 
     private enum ShootingTime
     {
@@ -18,7 +22,7 @@ public class EnemyShooting : MonoBehaviour
 
     IEnumerator ShootEvery()
     {
-        WeaponOfEnemy.Fire();
+        Instantiate(EnemBulletPrefab, EnemyFirepoint.position, EnemyFirepoint.rotation);
         yield return new WaitForSeconds(2f);
         ShootStatus = ShootingTime.ShootNow;
     }

@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     //To load up the game
     public void PlayGame()
     {
+        PlayerMovement.KillsForLevel = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 

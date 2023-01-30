@@ -83,6 +83,7 @@ public class Bullet : MonoBehaviour
         } 
     }
 
+    //this can be shared with the child class of an EnemyBullet as moving both bullets works exactly the same way
     protected void FixedUpdate()
     {
         transform.Translate(Vector2.up * Speed * Time.deltaTime);
