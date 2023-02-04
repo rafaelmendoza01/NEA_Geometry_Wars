@@ -5,7 +5,7 @@ using TMPro;
 
 public class ScoreTracker : MonoBehaviour
 { 
-    private int Score;
+    public static int Score;
     private RandomSpawner ToGetStats;
     private TextMeshProUGUI DisplayScore;
     void Start()

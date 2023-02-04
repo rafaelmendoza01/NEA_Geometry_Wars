@@ -16,9 +16,14 @@ public class PauseMenu : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if (GameIsPaused)
+            if (GameIsPaused && pauseMenuUI.active)
             {
                 Resume();
+            }
+            else if(GameIsPaused && scoreMenuUI.active)
+            {
+                scoreMenuUI.SetActive(false);
+                pauseMenuUI.SetActive(true);
             }
             else
             {

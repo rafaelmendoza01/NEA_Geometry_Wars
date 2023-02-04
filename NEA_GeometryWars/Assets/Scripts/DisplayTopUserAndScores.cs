@@ -7,9 +7,14 @@ using TMPro;
 public class DisplayTopUserAndScores : MonoBehaviour
 {
     private string Filename = "GW_Scores.txt";
-    private RandomSpawner ToGetLevel;
+    
     [SerializeField]
-    private TextMeshProUGUI ToDisplayTopScore;
+    private TextMeshProUGUI Top1;
+    [SerializeField]
+    private TextMeshProUGUI Top2;
+    [SerializeField]
+    private TextMeshProUGUI Top3;
+
     List<int> score = new List<int>();
     List<string> names = new List<string>();
 
@@ -17,9 +22,9 @@ public class DisplayTopUserAndScores : MonoBehaviour
     {
         public string Name;
         public int score;
-        public ScoreAndUsername(string Username, int Score)
+        public ScoreAndUsername(string TheirName, int Score)
         {
-            Name = Username;
+            Name = TheirName;
             score = Score;
         }
     }
@@ -27,9 +32,9 @@ public class DisplayTopUserAndScores : MonoBehaviour
 
     private void BubbleSort()
     {
-        for (int x = 0; x < Top3Scores.Count; x++)
+        for (int x = 0; x < Top3Scores.Count - 1; x++)
         {
-            for (int y = 0; y < Top3Scores.Count - x; y++)
+            for (int y = 0; y < Top3Scores.Count - 1 - x; y++)
             {
                 if (Top3Scores[y].score > Top3Scores[y+1].score)
                 {
@@ -45,16 +50,19 @@ public class DisplayTopUserAndScores : MonoBehaviour
     {
         bool justCreated = false;
 
+        //create file to store score and username
         if (!File.Exists(Filename))
         {
             File.Create(Filename);
-            File.AppendAllText(Filename, ToGetLevel.CurrentScore.ToString());
+            File.AppendAllText(Filename, ScoreTracker.Score.ToString());
             File.AppendAllText(Filename, Username);
             justCreated = true;
         }
         StreamReader ReadScoresAndUsername = new StreamReader(Filename);
         string line;
         int i = 0;
+        
+        //transfer all info from the file to the lists
         while((line = ReadScoresAndUsername.ReadLine()) != null && i < 3)
         {
             if(int.TryParse(line, out int TheirScore))
@@ -79,15 +87,28 @@ public class DisplayTopUserAndScores : MonoBehaviour
         {
             BubbleSort();
 
-            if (!justCreated)
+            if (ScoreTracker.Score > Top3Scores[0].score && Top3Scores.Count < 3)
             {
-                if (ToGetLevel.CurrentScore > Top3Scores[0].score)
-                {
-                    Top3Scores.Add(new ScoreAndUsername(Username, ToGetLevel.CurrentScore));
-                }
+                Top3Scores.Add(new ScoreAndUsername(Username, ScoreTracker.Score));
+            } 
+            else if(ScoreTracker.Score < Top3Scores[0].score && Top3Scores.Count < 3)
+            {
+                Top3Scores.Add(new ScoreAndUsername(Username, ScoreTracker.Score));
             }
-
+            else
+            {
+                Top3Scores[0] = new ScoreAndUsername(Username, ScoreTracker.Score);
+            }
             BubbleSort();
+        }
+        else if(Top3Scores.Count == 1)
+        {
+            Top3Scores.Add(new ScoreAndUsername(Username, ScoreTracker.Score));
+            BubbleSort();
+        }
+        else
+        {
+            Top3Scores.Add(new ScoreAndUsername(Username, ScoreTracker.Score));
         }
 
         File.Delete(Filename);
@@ -106,11 +127,15 @@ public class DisplayTopUserAndScores : MonoBehaviour
         {
             if (j == 0)
             {
-                ToDisplayTopScore.text = "1. " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
+                Top1.text = "1. " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
+            }
+            else if(j == 1)
+            {
+                Top2.text = "2. " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
             }
             else
             {
-                ToDisplayTopScore.text = "\n" + j + ". " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
+                Top3.text = "3. " + Top3Scores[j].Name + " : " + Top3Scores[j].score;
             }
         }
     }
