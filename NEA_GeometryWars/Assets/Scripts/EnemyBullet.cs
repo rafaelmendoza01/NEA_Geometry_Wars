@@ -33,9 +33,4 @@ public class EnemyBullet : Bullet
             Destroy(gameObject);         
         }
     }
-
-    /*private void FixedUpdate()
-    {
-        transform.Translate(Vector2.up * Speed * Time.deltaTime);
-    }*/
 }

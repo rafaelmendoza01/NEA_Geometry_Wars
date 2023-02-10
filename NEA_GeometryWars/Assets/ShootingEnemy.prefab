@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2149528571005111714}
   - component: {fileID: 5694918619367877470}
   - component: {fileID: 902065090734650948}
-  - component: {fileID: 4418779082626629638}
   m_Layer: 0
   m_Name: ShootingEnemy
   m_TagString: Enemy
@@ -129,18 +128,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7aa73a5109af5a14b9367b7256e322a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4418779082626629638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1436680600539325141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ab65152e5703e346aed739bbeb993b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5978035850109703458

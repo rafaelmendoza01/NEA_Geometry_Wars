@@ -1,6 +1,6 @@
-10
-Posum
 20
 Nick
 40
 Noodles
+80
+Robaire
