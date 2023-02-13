@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
     protected float distance;
     protected Vector2 BoundsOfPosition;
     protected void Start()
-    {
+    { 
         BoundsOfPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         radius = GetComponent<CircleCollider2D>().radius;
         NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();

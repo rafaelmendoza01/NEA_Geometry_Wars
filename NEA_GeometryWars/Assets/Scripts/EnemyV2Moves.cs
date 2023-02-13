@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyV2Moves : EnemyMovement
 {
     private float RotationSpeed = 300f;
-    private float DistanceToRandomPosition = 0;
     Vector2 GoToHere;
     bool ChooseNewPosition = true;
     float GoToX;
@@ -20,7 +19,6 @@ public class EnemyV2Moves : EnemyMovement
             ChooseNewPosition = true;
         }
 
-
         if (ChooseNewPosition)
         {
             do
@@ -28,8 +26,6 @@ public class EnemyV2Moves : EnemyMovement
                 GoToX = Random.Range(-BoundsOfPosition.x + radius, BoundsOfPosition.x - radius);
                 GoToY = Random.Range(-BoundsOfPosition.y + radius, BoundsOfPosition.y - radius);
                 GoToHere = new Vector2(GoToX, GoToY);
-                Vector2 DiffToPos = GoToHere - PosAsVector2;
-                DistanceToRandomPosition = DiffToPos.magnitude;
             } while (GoToHere == PosAsVector2); 
             ChooseNewPosition = false;
         }
