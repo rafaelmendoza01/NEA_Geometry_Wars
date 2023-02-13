@@ -43,6 +43,9 @@ public class RandomSpawner : MonoBehaviour
     [SerializeField]
     private AudioSource BombSFX;
 
+    [SerializeField]
+    private GameObject scoreMenuUI;
+
     private GameObject DoesBombStillExist;
 
     public void PlayBombSFX()
@@ -183,7 +186,8 @@ public class RandomSpawner : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+                scoreMenuUI.SetActive(true);
+                Time.timeScale = 0f;
             }
         }
     }
@@ -200,7 +204,8 @@ public class RandomSpawner : MonoBehaviour
             {
                 for (int i = 0; i < SpawnSet; i++)
                 {
-                    SpawnEnemy(0, i);
+                    int Type = Random.Range(0, 2);
+                    SpawnEnemy(Type, i);
                     State = SpawnState.Spawning;
                     NewSet++;
                     SpawnRemaining = level - NewSet;
@@ -237,6 +242,8 @@ public class RandomSpawner : MonoBehaviour
         yield break;
     }  
 
+
+    //this helps to write the instatiation of enemies in a neater way
     void SpawnEnemy(int TypeOfEnemy, int WhereToSpawn)
     {
         Instantiate(enemyPrefabs[TypeOfEnemy], SpawnPoints[WhereToSpawn].position, Quaternion.identity);

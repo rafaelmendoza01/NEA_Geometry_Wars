@@ -9,9 +9,10 @@ public class EnemyMovement : MonoBehaviour
     protected GameObject player;
     protected float radius;
     protected float distance;
-
+    protected Vector2 BoundsOfPosition;
     protected void Start()
     {
+        BoundsOfPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         radius = GetComponent<CircleCollider2D>().radius;
         NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
 
@@ -24,7 +25,6 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-
         if (player != null)
         {
             Vector2 Diff = player.GetComponent<Transform>().position - GetComponent<Transform>().position;

@@ -1,6 +1,6 @@
-20
-Nick
-40
-Noodles
-80
-Robaire
+120
+Gavin
+170
+Pug
+220
+Randompdf

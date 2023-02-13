@@ -7,8 +7,10 @@ public class PauseMenu : MonoBehaviour
 {
     //source: https://youtu.be/JivuXdrIHK0
     public static bool GameIsPaused = false;
-    public GameObject pauseMenuUI;
-    public GameObject scoreMenuUI;
+    [SerializeField]
+    private GameObject pauseMenuUI;
+    [SerializeField]
+    private GameObject scoreMenuUI;
     private RandomSpawner ToGetScore;
     private int Score = 0;
 
