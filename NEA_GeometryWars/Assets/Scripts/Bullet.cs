@@ -13,6 +13,8 @@ public class Bullet : MonoBehaviour
     private GameObject[] AllEnemyBullets;
     private GameObject AnEnemyBullet;
 
+    public Vector2 tempVector;
+
     [SerializeField]
     private GameObject ExplodeEffect;
 
@@ -86,6 +88,7 @@ public class Bullet : MonoBehaviour
     //this can be shared with the child class of an EnemyBullet as moving both bullets works exactly the same way
     protected void FixedUpdate()
     {
+        tempVector = Vector2.up;
         transform.Translate(Vector2.up * Speed * Time.deltaTime);
     }
 
