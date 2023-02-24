@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public static int KillsForLevel = 0;
     private RandomSpawner GetStats;
     private GameObject AbombStillExist;
-
+    private bool StartShooting = false;
 
     Vector2 moveDirection;
     Vector2 mousePosition;
@@ -32,17 +32,33 @@ public class PlayerMovement : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         AbombStillExist = GameObject.FindGameObjectWithTag("Bomb");
 
-        //for firing bullets
+        //for firing bullets when player decides to shoot with mouse
         if (Input.GetMouseButtonDown(0) && OptionsMenu.MouseToShoot == true && !PauseMenu.GameIsPaused)
         {
-            GetStats.PlayShootingSound();
-            Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
+            if (!StartShooting)
+            {
+                StartShooting = true;
+                StartCoroutine(FireBulletConstantly(StartShooting));
+            }
+            else
+            {
+                StopAllCoroutines();
+                StartShooting = false;
+            }
         }
-
+        //to fire bullets if keyboard used to shoot
         if(Input.GetKeyDown(KeyCode.O) && OptionsMenu.KeyBoardToShoot == true && !PauseMenu.GameIsPaused)
         {
-            GetStats.PlayShootingSound();
-            Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
+            if (!StartShooting)
+            {
+                StartShooting = true;
+                StartCoroutine(FireBulletConstantly(StartShooting));
+            }
+            else
+            {
+                StopAllCoroutines();
+                StartShooting = false;
+            }
         }
         
         //for activating bombs
@@ -72,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         transform.Translate(moveDirection*moveSpeed*Time.deltaTime, Space.World);
-
         //To rotate the player with respect to the position of the mouse in the screen
         if (OptionsMenu.MouseToShoot == true)
         {
@@ -84,8 +99,23 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Quaternion LookTowards = Quaternion.LookRotation(transform.forward, moveDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, LookTowards, Time.deltaTime * AngleSpeed);
+            if (moveDirection != Vector2.zero)
+            {
+                Quaternion LookTowards = Quaternion.LookRotation(transform.forward, moveDirection);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, LookTowards, Time.deltaTime * AngleSpeed);
+            }
         }
+    }
+
+    IEnumerator FireBulletConstantly(bool ShootingNow)
+    {
+        const float ShootingInterval = 0.05f;
+        while (ShootingNow)
+        {
+            GetStats.PlayShootingSound();
+            Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
+            yield return new WaitForSeconds(ShootingInterval);
+        }
+        yield break;
     }
 }

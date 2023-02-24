@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     private GameObject[] AllEnemyBullets;
     private GameObject AnEnemyBullet;
 
+    private Vector2 StartposAsVector;
     public Vector2 tempVector;
 
     [SerializeField]
@@ -31,6 +32,7 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
+        StartposAsVector = new Vector2(transform.position.x, transform.position.y);
         ScreenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         ToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
     }
@@ -38,6 +40,14 @@ public class Bullet : MonoBehaviour
     {
         AllEnemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
         AllEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        Vector2 NewPosAsVector = new Vector2(transform.position.x, transform.position.y);
+        if(NewPosAsVector != StartposAsVector)
+        {
+            tempVector = NewPosAsVector - StartposAsVector;
+            tempVector = tempVector.normalized;
+        }
+        
 
         if (OutOfScreen())
         {
@@ -58,11 +68,12 @@ public class Bullet : MonoBehaviour
                     ToGetStats.PlayExplodeSFX();
                     Destroy(Enemy);
                     ToGetStats.CurrentScore += 10;
-                    if (PlayerMovement.KillsForLevel == ToGetStats.level)
+                    
+                    /*if (PlayerMovement.KillsForLevel == ToGetStats.level)
                     {
                         ToGetStats.LevelCleared = true;
                         PlayerMovement.KillsForLevel = 0;
-                    }
+                    } */
                     Destroy(gameObject);
                 }
             }
@@ -88,7 +99,6 @@ public class Bullet : MonoBehaviour
     //this can be shared with the child class of an EnemyBullet as moving both bullets works exactly the same way
     protected void FixedUpdate()
     {
-        tempVector = Vector2.up;
         transform.Translate(Vector2.up * Speed * Time.deltaTime);
     }
 
@@ -96,23 +106,15 @@ public class Bullet : MonoBehaviour
     //prevent too many objects existing and causing potential lag
     protected bool OutOfScreen()
     {
-        if(transform.position.x > ScreenBounds.x)
+        if(Mathf.Abs(transform.position.x) > ScreenBounds.x)
         {
             return true;
         }
-        if(transform.position.x < -ScreenBounds.x)
+        
+        if (Mathf.Abs(transform.position.y) > ScreenBounds.y)
         {
             return true;
         }
-        if (transform.position.y > ScreenBounds.y)
-        {
-            return true;
-        }
-        if (transform.position.y < -ScreenBounds.y)
-        {
-            return true;
-        }
-
         return false;
     }
 }

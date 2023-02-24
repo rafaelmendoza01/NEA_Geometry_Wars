@@ -28,12 +28,12 @@ public class EscapeEnemy : EnemyMovement
         {
             right.Add(Unsorted[i]);
         }
-
         left = MergeSort(left);
         right = MergeSort(right);
         return Merge(left, right);
     }
 
+    //Used to combine 2 lists into a sorted list.
     private static List<BulletAndDistance> Merge(List<BulletAndDistance> left, List<BulletAndDistance> right)
     {
         List<BulletAndDistance> result = new List<BulletAndDistance>();
@@ -139,7 +139,6 @@ public class EscapeEnemy : EnemyMovement
                 Vector2 MoveVector = Vector2.Perpendicular(ToGetVectorOfThisBullet.tempVector);
                 transform.Translate(MoveVector * moveSpeed * Time.deltaTime);
             }
-            
         }
     }
 }

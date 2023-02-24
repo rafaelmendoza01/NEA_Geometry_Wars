@@ -14,6 +14,7 @@ public class StatsUpdate : MonoBehaviour
     private GameObject[] bombs;
     [SerializeField]
 
+    public static int num_lives;
 
     //To find the text mesh objects so that the stats can be updated.
     void Start()
@@ -26,9 +27,12 @@ public class StatsUpdate : MonoBehaviour
     void Update()
     { 
         int num_bombs = spawnerToGetStats.BombsUsed;
-        int CurrentLevel = spawnerToGetStats.level;
-        int num_lives = spawnerToGetStats.Life;
-        DisplayLevel.text = "Level: " + CurrentLevel.ToString();
+        num_lives = spawnerToGetStats.Life;
+        if (!OptionsMenu.SpecialGameMode)
+        {
+            int CurrentLevel = spawnerToGetStats.level;
+            DisplayLevel.text = "Level: " + CurrentLevel.ToString();
+        }
 
         if(num_lives == 0)
         {

@@ -133,38 +133,52 @@ public class RandomSpawner : MonoBehaviour
 
         if (player != null)
         {
-            if(PlayerMovement.KillsForLevel == level)
+            if (!OptionsMenu.SpecialGameMode)
             {
-                LevelCleared = true;
-            }
-
-            if (LevelCleared == true) 
-            {
-                State = SpawnState.TimeToSpawn;
-            }
-
-            if (DoesBombStillExist == null)
-            {
-                if (State == SpawnState.TimeToSpawn && LevelCleared)
+                if (PlayerMovement.KillsForLevel == level)
                 {
-                    level++;
-                    StartCoroutine(SpawnWave(level));
-                    LevelCleared = false;
+                    LevelCleared = true;
+                    PlayerMovement.KillsForLevel = 0;
+                    StopAllCoroutines();
                 }
-                if (State == SpawnState.BombRecentlyDestroyed && !LevelCleared)
+
+                if (LevelCleared)
                 {
-                    StartCoroutine(SpawnWave(SpawnRemaining));
-                    LevelCleared = false;
+                    State = SpawnState.TimeToSpawn;
                 }
-                if (State == SpawnState.BombRecentlyDestroyed && LevelCleared)
+
+                if (DoesBombStillExist == null)
                 {
-                    StartCoroutine(SpawnWave(level++));
-                    LevelCleared = false;
+                    if (State == SpawnState.TimeToSpawn && LevelCleared)
+                    {
+                        level++;
+                        StartCoroutine(SpawnWave(level));
+                        LevelCleared = false;
+                    }
+                    if (State == SpawnState.BombRecentlyDestroyed && !LevelCleared)
+                    {
+                        StartCoroutine(SpawnWave(SpawnRemaining));
+                        LevelCleared = false;
+                    }
+                    if (State == SpawnState.BombRecentlyDestroyed && LevelCleared)
+                    {
+                        level++;
+                        StartCoroutine(SpawnWave(level));
+                        LevelCleared = false;
+                    }
+                }
+            }
+            else
+            {
+                while(player != null)
+                {
+                    StartCoroutine(SpecialGameSpawn());
                 }
             }
         }
         else
         {
+
             for(int i = 0; i < LivingEnemies.Length; i++)
             {
                 Destroy(LivingEnemies[i]);
@@ -178,11 +192,17 @@ public class RandomSpawner : MonoBehaviour
                 Destroy(EnemyBullets[i]);
             }
 
-            if(Life > 0)
+            if(Life > 0 && !OptionsMenu.SpecialGameMode)
             {
                 StopAllCoroutines();
                 Instantiate(playerPrefab, transform.position, Quaternion.identity);
                 StartCoroutine(SpawnWave(level - PlayerMovement.KillsForLevel));
+            }
+            else if(Life > 0 && OptionsMenu.SpecialGameMode)
+            {
+                StopAllCoroutines();
+                Instantiate(playerPrefab, transform.position, Quaternion.identity);
+                StartCoroutine(SpecialGameSpawn());
             }
             else
             {
@@ -192,9 +212,51 @@ public class RandomSpawner : MonoBehaviour
         }
     }
 
+    private bool IsWithingRange(GameObject TheEnemy, GameObject ThePlayer, Vector2 Pos)
+    {
+        Vector2 PlayerPositionAsVector2 = new Vector2(ThePlayer.transform.position.x, ThePlayer.transform.position.y);
+        Vector2 diff = PlayerPositionAsVector2 - Pos; 
+        float dist = diff.magnitude;
+
+        if (ThePlayer.GetComponent<CircleCollider2D>().radius + TheEnemy.GetComponent<CircleCollider2D>().radius >= dist)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    IEnumerator SpecialGameSpawn()
+    {
+        GameObject _Enemy;
+        GameObject _Player = GameObject.FindGameObjectWithTag("Player");
+        Vector2 SpawnHere;
+        do
+        {
+            float WaitBetweenEnemies = Random.RandomRange(1f, 5f);
+            int EnemyType = Random.RandomRange(0, enemyPrefabs.Length);
+            _Enemy = enemyPrefabs[EnemyType];
+            Vector2 screenAsVector = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+            float x = Random.Range(-screenAsVector.x + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.x - _Enemy.GetComponent<CircleCollider2D>().radius);
+            float y = Random.Range(-screenAsVector.y + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.y - _Enemy.GetComponent<CircleCollider2D>().radius);
+            SpawnHere = new Vector2(x, y);
+
+            float WaitingTime = Random.RandomRange(0.5f, 4.5f);
+            yield return new WaitForSeconds(WaitingTime);
+
+        } while (IsWithingRange(_Enemy, _Player, SpawnHere));
+
+        Instantiate(_Enemy, SpawnHere, Quaternion.identity);
+
+
+        yield break;
+    }
+
     //purpose is to know when to spawn enemies
     IEnumerator SpawnWave(int SpawnSet)
-    { 
+    {
         NewSet = 0;
         int waves = SpawnSet / 6;
         int NumEnemyToSpawnLast = SpawnSet % 6;
@@ -210,7 +272,7 @@ public class RandomSpawner : MonoBehaviour
                     NewSet++;
                     SpawnRemaining = level - NewSet;
                     yield return new WaitForSeconds(TimeBetweenEnemies);            
-                }
+                } 
             }
             else
             {
@@ -242,10 +304,10 @@ public class RandomSpawner : MonoBehaviour
         yield break;
     }  
 
-
     //this helps to write the instatiation of enemies in a neater way
-    void SpawnEnemy(int TypeOfEnemy, int WhereToSpawn)
+    private void SpawnEnemy(int TypeOfEnemy, int WhereToSpawn)
     {
         Instantiate(enemyPrefabs[TypeOfEnemy], SpawnPoints[WhereToSpawn].position, Quaternion.identity);
     }  
+
 }

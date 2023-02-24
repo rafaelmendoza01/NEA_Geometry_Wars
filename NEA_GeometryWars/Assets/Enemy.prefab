@@ -127,7 +127,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab65152e5703e346aed739bbeb993b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  radius: 0
-  distance: 0
-  status: 1

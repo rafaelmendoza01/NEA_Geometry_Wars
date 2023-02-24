@@ -899,7 +899,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4279107839
   m_fontColor: {r: 1, g: 0, b: 0.05476761, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1447,7 +1447,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &809306723
 RectTransform:
@@ -1688,7 +1688,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190335
   m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1859,13 +1859,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 915853565}
   m_TextComponent: {fileID: 1286742150}
   m_Placeholder: {fileID: 0}
-  m_ContentType: 0
+  m_ContentType: 5
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 6
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 4
   m_CharacterLimit: 10
   m_OnSubmit:
     m_PersistentCalls:
@@ -2065,7 +2065,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190335
   m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2760,11 +2760,14 @@ MonoBehaviour:
   DeathSFX: {fileID: 1488652475}
   ShootingSFX: {fileID: 1488652474}
   BombSFX: {fileID: 1488652476}
+  scoreMenuUI: {fileID: 1270162135}
   PlayerSpawnState: 1
   level: 0
   enemyPrefabs:
   - {fileID: 5482483446573901301, guid: 1ee620a14190c0d40ab62d57d750ca5d, type: 3}
+  - {fileID: 7570321315973181171, guid: 2141d4c41a1805b428a28d908ceaad67, type: 3}
   - {fileID: 1436680600539325141, guid: b431b4b36cd83114082a416daad44fc8, type: 3}
+  - {fileID: 3684450484081637895, guid: b23a6588836748e47b60d47e32e0bfb7, type: 3}
   State: 0
 --- !u!4 &1488652469
 Transform:

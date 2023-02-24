@@ -16,7 +16,6 @@ public class Boundaries : MonoBehaviour
         //to set up boundaries of the world view and radius
     }
 
-
     //This function is used to set the position to always be within the screen boundaries
     //This function is run after all other update functions has been called
     //The LateUpdate function helps with keeping the objects in screen as it reflects the objects movement after updates so checks if they're still within screen

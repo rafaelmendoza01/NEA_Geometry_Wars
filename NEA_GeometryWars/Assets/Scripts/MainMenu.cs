@@ -9,12 +9,12 @@ public class MainMenu : MonoBehaviour
     public void PlayGame()
     {
         PlayerMovement.KillsForLevel = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        SceneManager.LoadScene("Game");
+        Time.timeScale = 1f;
     }
 
     public void QuitGame()
     {
         Application.Quit();
     }
-    
 }

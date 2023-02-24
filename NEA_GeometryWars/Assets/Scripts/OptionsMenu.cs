@@ -63,6 +63,13 @@ public class OptionsMenu : MonoBehaviour
 
     public void SpecialMode()
     {
-        SpecialGameMode = true;
+        if (!SpecialGameMode)
+        {
+            SpecialGameMode = true;
+        }
+        else
+        {
+            SpecialGameMode = false;
+        }
     }
 }
