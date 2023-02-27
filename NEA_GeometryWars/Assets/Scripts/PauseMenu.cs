@@ -11,8 +11,6 @@ public class PauseMenu : MonoBehaviour
     private GameObject pauseMenuUI;
     [SerializeField]
     private GameObject scoreMenuUI;
-    private RandomSpawner ToGetScore;
-    private int Score = 0;
 
     void Update()
     {
