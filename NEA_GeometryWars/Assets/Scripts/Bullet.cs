@@ -64,7 +64,11 @@ public class Bullet : MonoBehaviour
                 if (Enemy.GetComponent<CircleCollider2D>().radius + GetComponent<CircleCollider2D>().radius > distance)
                 {
                     CreateExplosionFX();
-                    PlayerMovement.KillsForLevel++;
+
+                    if (!OptionsMenu.SpecialGameMode)
+                    {
+                        PlayerMovement.KillsForLevel++;
+                    }
                     ToGetStats.PlayExplodeSFX();
                     Destroy(Enemy);
                     ToGetStats.CurrentScore += 10;

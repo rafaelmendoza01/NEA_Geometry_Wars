@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -10,6 +8,10 @@ public class OptionsMenu : MonoBehaviour
     public AudioSource Music2;
     public AudioSource Music3;
 
+
+    //all the variables to change the settings of the game based on the player's choice is labelled
+    //as static as the OptionsMenu script gets destroyed when the player accesses a new scene and
+    //thus there needs to be a way to get the variables even when the script it's in is null.
     static public bool Music1Wanted = false;
     static public bool Music2Wanted = false;
     static public bool Music3Wanted = false;

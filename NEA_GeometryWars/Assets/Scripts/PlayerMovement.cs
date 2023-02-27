@@ -109,10 +109,10 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator FireBulletConstantly(bool ShootingNow)
     {
-        const float ShootingInterval = 0.05f;
+        const float ShootingInterval = 0.1f;
+        GetStats.PlayShootingSound();
         while (ShootingNow)
         {
-            GetStats.PlayShootingSound();
             Instantiate(bulletPrefab, Firepoint.position, Firepoint.rotation);
             yield return new WaitForSeconds(ShootingInterval);
         }

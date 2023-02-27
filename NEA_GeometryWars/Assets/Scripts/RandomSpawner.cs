@@ -99,6 +99,7 @@ public class RandomSpawner : MonoBehaviour
     private float TimeBetweenEnemies = 0.1f;
     //to wait correct amount of time between each enemy and wave of enemies
 
+    private bool StartedRandomSpawning = false;
     private void Start()
     {
         CurrentScore = 0;
@@ -170,16 +171,17 @@ public class RandomSpawner : MonoBehaviour
             }
             else
             {
-                while(player != null)
+                if (!StartedRandomSpawning)
                 {
                     StartCoroutine(SpecialGameSpawn());
+                    StartedRandomSpawning = true;
                 }
             }
         }
         else
         {
-
-            for(int i = 0; i < LivingEnemies.Length; i++)
+            StopAllCoroutines();
+            for (int i = 0; i < LivingEnemies.Length; i++)
             {
                 Destroy(LivingEnemies[i]);
             }
@@ -194,14 +196,13 @@ public class RandomSpawner : MonoBehaviour
 
             if(Life > 0 && !OptionsMenu.SpecialGameMode)
             {
-                StopAllCoroutines();
                 Instantiate(playerPrefab, transform.position, Quaternion.identity);
                 StartCoroutine(SpawnWave(level - PlayerMovement.KillsForLevel));
             }
             else if(Life > 0 && OptionsMenu.SpecialGameMode)
             {
-                StopAllCoroutines();
                 Instantiate(playerPrefab, transform.position, Quaternion.identity);
+                StartedRandomSpawning = true;
                 StartCoroutine(SpecialGameSpawn());
             }
             else
@@ -218,7 +219,7 @@ public class RandomSpawner : MonoBehaviour
         Vector2 diff = PlayerPositionAsVector2 - Pos; 
         float dist = diff.magnitude;
 
-        if (ThePlayer.GetComponent<CircleCollider2D>().radius + TheEnemy.GetComponent<CircleCollider2D>().radius >= dist)
+        if (ThePlayer.GetComponent<CircleCollider2D>().radius + TheEnemy.GetComponent<CircleCollider2D>().radius > 3.5f)
         {
             return true;
         }
@@ -229,30 +230,37 @@ public class RandomSpawner : MonoBehaviour
     }
 
     IEnumerator SpecialGameSpawn()
-    {
+    {   
         GameObject _Enemy;
         GameObject _Player = GameObject.FindGameObjectWithTag("Player");
         Vector2 SpawnHere;
-        do
+        int temp = 0;
+        while (temp < 10)
         {
-            float WaitBetweenEnemies = Random.RandomRange(1f, 5f);
-            int EnemyType = Random.RandomRange(0, enemyPrefabs.Length);
-            _Enemy = enemyPrefabs[EnemyType];
-            Vector2 screenAsVector = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-            float x = Random.Range(-screenAsVector.x + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.x - _Enemy.GetComponent<CircleCollider2D>().radius);
-            float y = Random.Range(-screenAsVector.y + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.y - _Enemy.GetComponent<CircleCollider2D>().radius);
-            SpawnHere = new Vector2(x, y);
+            do
+            {
+                int EnemyType = Random.RandomRange(0, enemyPrefabs.Length);
+                _Enemy = enemyPrefabs[EnemyType];
+                Vector2 screenAsVector = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+                float x = Random.Range(-screenAsVector.x + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.x - _Enemy.GetComponent<CircleCollider2D>().radius);
+                float y = Random.Range(-screenAsVector.y + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.y - _Enemy.GetComponent<CircleCollider2D>().radius);
+                SpawnHere = new Vector2(x, y);
 
-            float WaitingTime = Random.RandomRange(0.5f, 4.5f);
-            yield return new WaitForSeconds(WaitingTime);
+            } while (IsWithingRange(_Enemy, _Player, SpawnHere));
+            //instantiate the enemy.
+            Instantiate(_Enemy, SpawnHere, Quaternion.identity);
+            temp++;
+            float waitingTime = Random.Range(0.5f, 1f);
+            yield return new WaitForSeconds(waitingTime);
+        }
 
-        } while (IsWithingRange(_Enemy, _Player, SpawnHere));
-
-        Instantiate(_Enemy, SpawnHere, Quaternion.identity);
-
-
+        if(temp == 10)
+        {
+            StartedRandomSpawning = false;
+        }
         yield break;
     }
+
 
     //purpose is to know when to spawn enemies
     IEnumerator SpawnWave(int SpawnSet)

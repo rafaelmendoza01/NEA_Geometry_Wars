@@ -5,6 +5,8 @@ using TMPro;
 
 public class ScoreTracker : MonoBehaviour
 { 
+    //this class is used to display the current score of the user.
+
     public static int Score;
     private RandomSpawner ToGetStats;
     private TextMeshProUGUI DisplayScore;

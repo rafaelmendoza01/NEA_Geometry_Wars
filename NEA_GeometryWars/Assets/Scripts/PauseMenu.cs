@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
             {
                 Resume();
             }
-            else if(GameIsPaused && scoreMenuUI.active && ToGetScore.Life > 0)
+            else if(GameIsPaused && scoreMenuUI.active && StatsUpdate.num_lives > 0)
             {
                 scoreMenuUI.SetActive(false);
                 pauseMenuUI.SetActive(true);
