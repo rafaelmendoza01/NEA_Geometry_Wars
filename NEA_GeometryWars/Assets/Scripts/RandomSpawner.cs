@@ -219,7 +219,7 @@ public class RandomSpawner : MonoBehaviour
         Vector2 diff = PlayerPositionAsVector2 - Pos; 
         float dist = diff.magnitude;
 
-        if (ThePlayer.GetComponent<CircleCollider2D>().radius + TheEnemy.GetComponent<CircleCollider2D>().radius > 3.5f)
+        if (ThePlayer.GetComponent<CircleCollider2D>().radius + TheEnemy.GetComponent<CircleCollider2D>().radius > 5.5f)
         {
             return true;
         }
@@ -247,10 +247,9 @@ public class RandomSpawner : MonoBehaviour
                 SpawnHere = new Vector2(x, y);
 
             } while (IsWithingRange(_Enemy, _Player, SpawnHere));
-            //instantiate the enemy.
             Instantiate(_Enemy, SpawnHere, Quaternion.identity);
             temp++;
-            float waitingTime = Random.Range(0.5f, 1f);
+            float waitingTime = Random.Range(0.7f, 1.4f);
             yield return new WaitForSeconds(waitingTime);
         }
 
@@ -317,5 +316,4 @@ public class RandomSpawner : MonoBehaviour
     {
         Instantiate(enemyPrefabs[TypeOfEnemy], SpawnPoints[WhereToSpawn].position, Quaternion.identity);
     }  
-
 }
