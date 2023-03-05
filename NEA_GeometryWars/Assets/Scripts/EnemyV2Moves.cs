@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyV2Moves : EnemyMovement
 {
     private float RotationSpeed = 300f;
-    Vector2 GoToHere;
-    bool ChooseNewPosition = true;
-    float GoToX;
-    float GoToY;
+    private Vector2 GoToHere;
+    private bool ChooseNewPosition = true;
+    private float GoToX;
+    private float GoToY;
     void Update()
     {
         player = GameObject.FindGameObjectWithTag("Player");

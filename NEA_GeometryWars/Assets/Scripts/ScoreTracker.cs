@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -12,6 +10,7 @@ public class ScoreTracker : MonoBehaviour
 
     private RandomSpawner ToGetStats;
     private TextMeshProUGUI DisplayScore;
+
     void Start()
     {
         Score = 0;

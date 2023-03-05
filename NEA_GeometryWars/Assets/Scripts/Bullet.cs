@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class Bullet : MonoBehaviour
 {
@@ -17,11 +14,11 @@ public class Bullet : MonoBehaviour
     public Vector2 tempVector;
 
     [SerializeField]
-    private GameObject ExplodeEffect;
+    protected GameObject ExplodeEffect;
 
     protected Vector2 ScreenBounds;
 
-    private void CreateExplosionFX()
+    protected void CreateExplosionFX()
     {
         int SpawnHere = Random.Range(0, 360);
         for(int i = 0; i < 4; i++)
@@ -73,11 +70,6 @@ public class Bullet : MonoBehaviour
                     Destroy(Enemy);
                     ToGetStats.CurrentScore += 10;
                     
-                    /*if (PlayerMovement.KillsForLevel == ToGetStats.level)
-                    {
-                        ToGetStats.LevelCleared = true;
-                        PlayerMovement.KillsForLevel = 0;
-                    } */
                     Destroy(gameObject);
                 }
             }

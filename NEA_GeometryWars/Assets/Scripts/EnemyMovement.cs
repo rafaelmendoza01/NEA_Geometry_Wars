@@ -1,8 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
+
+    //all these variables are to be shared with the child classes.
     protected RandomSpawner NeedToGetStats;
     protected float moveSpeed = 2f;
     protected float increaseSpeedBy = 0.04f;
@@ -14,13 +15,17 @@ public class EnemyMovement : MonoBehaviour
     protected void Start()
     { 
         BoundsOfPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        //this variable is only used by the EnemyV2Moves class as it needs to find a random position to go to but I included here to prevent writing a start method there and as well to use in other child classes if I ever need to/have time.
         radius = GetComponent<CircleCollider2D>().radius;
         NeedToGetStats = GameObject.FindObjectOfType<RandomSpawner>();
 
-
-        if (NeedToGetStats.level % 5 == 0 || NeedToGetStats.level > 5)
-        { 
-            moveSpeed += (NeedToGetStats.level / 5 * increaseSpeedBy);
+        //to ensure the speed of the enemy increases each time the player progresses in the normal game mode.
+        if (!OptionsMenu.SpecialGameMode)
+        {
+            if (NeedToGetStats.level % 5 == 0 || NeedToGetStats.level > 5)
+            {
+                moveSpeed += (NeedToGetStats.level / 5 * increaseSpeedBy);
+            }
         }
     }
 

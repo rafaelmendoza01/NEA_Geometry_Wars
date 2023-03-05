@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -84,10 +83,12 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    //Anything related to moving the player is put here to ensure the 
+    //Anything related to moving the player is put here to ensure the player moves smoothly.
     private void FixedUpdate()
     {
         transform.Translate(moveDirection*moveSpeed*Time.deltaTime, Space.World);
+        
+        
         //To rotate the player with respect to the position of the mouse in the screen
         if (OptionsMenu.MouseToShoot == true)
         {
@@ -99,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            //to ensure the position the sprite is facing is the same as last frame.
             if (moveDirection != Vector2.zero)
             {
                 Quaternion LookTowards = Quaternion.LookRotation(transform.forward, moveDirection);

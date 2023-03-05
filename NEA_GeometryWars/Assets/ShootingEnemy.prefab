@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyFirepoint: {fileID: 7848998314273857738}
-  EnemBulletPrefab: {fileID: 2062236689681929540, guid: 08f1f32f803753d4fb92442189dab39c, type: 3}
+  EnemyBulletPrefab: {fileID: 2062236689681929540, guid: 08f1f32f803753d4fb92442189dab39c, type: 3}
 --- !u!114 &902065090734650948
 MonoBehaviour:
   m_ObjectHideFlags: 0

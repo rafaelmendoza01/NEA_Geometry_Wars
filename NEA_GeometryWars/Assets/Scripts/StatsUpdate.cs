@@ -23,7 +23,6 @@ public class StatsUpdate : MonoBehaviour
         DisplayLevel = GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
     void Update()
     { 
         int num_bombs = spawnerToGetStats.BombsUsed;
@@ -59,6 +58,5 @@ public class StatsUpdate : MonoBehaviour
         {
             Destroy(bombs[num_bombs].gameObject);
         }
-
     }
 }

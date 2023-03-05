@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //enemey bullet inherits variables and a function from the Bullet class
@@ -29,6 +27,7 @@ public class EnemyBullet : Bullet
             ToGetStats.Life--;
             ToGetStats.PlayerSpawnState = RandomSpawner.PlayerJustSpawned.SpawnPlayerAgain;
             ToGetStats.PlayDeathSFX();
+            CreateExplosionFX();
             Destroy(player);
             Destroy(gameObject);         
         }

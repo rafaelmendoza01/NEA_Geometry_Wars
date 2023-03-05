@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +7,9 @@ public class EscapeEnemy : EnemyMovement
     GameObject[] PlayerBullets;
     List<BulletAndDistance> Distance2 = new List<BulletAndDistance>(0);
 
-    //source for the merge algorithm
+    //source for the merge sort algorithm
     //https://www.w3resource.com/csharp-exercises/searching-and-sorting-algorithm/searching-and-sorting-algorithm-exercise-7.php
+    //using a recursion algorithm until the list (base case) has a length of 1
     static List<BulletAndDistance> MergeSort(List<BulletAndDistance> Unsorted)
     {
         if(Unsorted.Count <= 1)

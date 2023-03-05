@@ -26,8 +26,6 @@ public class RandomSpawner : MonoBehaviour
     public int BombsUsed = 3;
     public int CurrentScore;
 
-    private OptionsMenu TheirChosenSettings;
-
     [SerializeField]
     private AudioSource Triangulation;
     [SerializeField]
@@ -171,10 +169,19 @@ public class RandomSpawner : MonoBehaviour
             }
             else
             {
-                if (!StartedRandomSpawning)
+                if(DoesBombStillExist == null)
                 {
-                    StartCoroutine(SpecialGameSpawn());
-                    StartedRandomSpawning = true;
+                    if(State == SpawnState.BombRecentlyDestroyed)
+                    {
+                        StartCoroutine(SpecialGameSpawn());
+                        State = SpawnState.TimeToSpawn;
+                        StartedRandomSpawning = true;
+                    }
+                    if (!StartedRandomSpawning)
+                    {
+                        StartCoroutine(SpecialGameSpawn());
+                        StartedRandomSpawning = true;
+                    }
                 }
             }
         }
@@ -213,13 +220,14 @@ public class RandomSpawner : MonoBehaviour
         }
     }
 
-    private bool IsWithingRange(GameObject TheEnemy, GameObject ThePlayer, Vector2 Pos)
+    //To ensure the distance between the player and a randomly spawned enemy isnt too close, thus making it more fair.
+    private bool IsWithingRange(GameObject ThePlayer, Vector2 Pos)
     {
         Vector2 PlayerPositionAsVector2 = new Vector2(ThePlayer.transform.position.x, ThePlayer.transform.position.y);
         Vector2 diff = PlayerPositionAsVector2 - Pos; 
         float dist = diff.magnitude;
 
-        if (ThePlayer.GetComponent<CircleCollider2D>().radius + TheEnemy.GetComponent<CircleCollider2D>().radius > 5.5f)
+        if (dist < 3.5f)
         {
             return true;
         }
@@ -230,43 +238,45 @@ public class RandomSpawner : MonoBehaviour
     }
 
     IEnumerator SpecialGameSpawn()
-    {   
+    {
         GameObject _Enemy;
         GameObject _Player = GameObject.FindGameObjectWithTag("Player");
         Vector2 SpawnHere;
         int temp = 0;
         while (temp < 10)
         {
+            //the code keeps on finding a new vector position to spawn the enemy until the spawn point isnt too close.
             do
             {
-                int EnemyType = Random.RandomRange(0, enemyPrefabs.Length);
+                int EnemyType = Random.Range(0, enemyPrefabs.Length);
                 _Enemy = enemyPrefabs[EnemyType];
                 Vector2 screenAsVector = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
                 float x = Random.Range(-screenAsVector.x + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.x - _Enemy.GetComponent<CircleCollider2D>().radius);
                 float y = Random.Range(-screenAsVector.y + _Enemy.GetComponent<CircleCollider2D>().radius, screenAsVector.y - _Enemy.GetComponent<CircleCollider2D>().radius);
                 SpawnHere = new Vector2(x, y);
 
-            } while (IsWithingRange(_Enemy, _Player, SpawnHere));
+            } while (IsWithingRange(_Player, SpawnHere));
             Instantiate(_Enemy, SpawnHere, Quaternion.identity);
             temp++;
-            float waitingTime = Random.Range(0.7f, 1.4f);
+            float waitingTime = Random.Range(0.4f, 0.9f);
             yield return new WaitForSeconds(waitingTime);
         }
 
-        if(temp == 10)
+        if (temp == 10)
         {
             StartedRandomSpawning = false;
         }
         yield break;
     }
 
-
-    //purpose is to know when to spawn enemies
+    //purpose is to spawn the enemies in a sytematic way in the "normal" game mode.
     IEnumerator SpawnWave(int SpawnSet)
     {
         NewSet = 0;
         int waves = SpawnSet / 6;
+        //6 spawn points so waves are the SpawnSet/6
         int NumEnemyToSpawnLast = SpawnSet % 6;
+        //as the number of enemies wont be in multiple of 6s all the time, there has to be a way to calculate the last set of enemies (<6)
         while (NewSet < SpawnSet)
         {
             if (level < 5)
@@ -311,7 +321,7 @@ public class RandomSpawner : MonoBehaviour
         yield break;
     }  
 
-    //this helps to write the instatiation of enemies in a neater way
+    //this helps to write the instatiation of enemies in a neater way for the normal game mode.
     private void SpawnEnemy(int TypeOfEnemy, int WhereToSpawn)
     {
         Instantiate(enemyPrefabs[TypeOfEnemy], SpawnPoints[WhereToSpawn].position, Quaternion.identity);

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyShooting : EnemyMovement
@@ -9,7 +8,7 @@ public class EnemyShooting : EnemyMovement
     [SerializeField]
     private Transform EnemyFirepoint;
     [SerializeField]
-    private GameObject EnemBulletPrefab;
+    private GameObject EnemyBulletPrefab;
 
     //IEnumarator and enum used to let the enemy shoot every time interval (2s)
     private enum ShootingTime
@@ -22,7 +21,7 @@ public class EnemyShooting : EnemyMovement
 
     IEnumerator ShootEvery()
     {
-        Instantiate(EnemBulletPrefab, EnemyFirepoint.position, EnemyFirepoint.rotation);
+        Instantiate(EnemyBulletPrefab, EnemyFirepoint.position, EnemyFirepoint.rotation);
         yield return new WaitForSeconds(2f);
         ShootStatus = ShootingTime.ShootNow;
     }

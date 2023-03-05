@@ -103,7 +103,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1054099039298634941, guid: c43b8bf1cd7846d4aa7c1d670ff91cca, type: 3}
   bombPrefab: {fileID: 8590636466752297474, guid: 8f04cff152a62ea4c8202532d1e59644, type: 3}
   Firepoint: {fileID: 5146517719284452384}
-  KillHistory: 0
 --- !u!114 &5146517719204797670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +130,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.25
+  m_Radius: 0.6
 --- !u!1 &5146517719284452385
 GameObject:
   m_ObjectHideFlags: 0
