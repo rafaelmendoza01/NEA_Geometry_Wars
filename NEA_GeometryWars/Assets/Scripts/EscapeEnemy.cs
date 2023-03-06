@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class EscapeEnemy : EnemyMovement
 {
     GameObject[] PlayerBullets;
@@ -136,8 +135,28 @@ public class EscapeEnemy : EnemyMovement
             if (FocusBullet != null)
             {
                 Bullet ToGetVectorOfThisBullet = FocusBullet.GetComponent<Bullet>();
-                Vector2 MoveVector = Vector2.Perpendicular(ToGetVectorOfThisBullet.tempVector);
-                transform.Translate(MoveVector * moveSpeed * Time.deltaTime);
+                Vector2 MoveVector = new Vector2(-ToGetVectorOfThisBullet.tempVector.y, ToGetVectorOfThisBullet.tempVector.x);
+                //this new vector is calculated from applying an anticlockwise matrix of rotation 90 degrees to the previous vector.
+                //refer to documented design for more details.
+
+                float[] BulletXComponent = { ToGetVectorOfThisBullet.tempVector.x, FocusBullet.transform.position.x };
+                float[] BulletYComponent = { ToGetVectorOfThisBullet.tempVector.y, FocusBullet.transform.position.y };
+
+                float[] ThisEnemyXComponent = {MoveVector.x, transform.position.x};
+                float[] ThisEnemyYComponent = {MoveVector.y, transform.position.y};
+
+                float[] TempForEqn1 = {BulletXComponent[0], -ThisEnemyXComponent[0], ThisEnemyXComponent[1] - BulletXComponent[1]};
+                float[] TempForEqn2 = {BulletYComponent[0], -ThisEnemyYComponent[0], ThisEnemyYComponent[1] - BulletYComponent[1]};
+
+                SimultaneousEqnSolver SolveForEqn = new SimultaneousEqnSolver(TempForEqn1, TempForEqn2);
+                if (!SolveForEqn.EnemyGoingTowardsBullet())
+                {
+                    transform.Translate(MoveVector * moveSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.Translate(-MoveVector * moveSpeed * Time.deltaTime);
+                }
             }
         }
     }
