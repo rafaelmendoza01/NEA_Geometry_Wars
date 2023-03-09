@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
         //for activating bombs
-        if(Input.GetMouseButtonDown(1) && GetStats.BombsUsed > 0 && OptionsMenu.MouseToShoot == true)
+        if(Input.GetMouseButtonDown(1) && GetStats.BombsUsed > 0 && OptionsMenu.MouseToShoot == true && !PauseMenu.GameIsPaused)
         {
             if (AbombStillExist == null)
             {
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
                 GetStats.BombsUsed--;
             }
         }
-        if (Input.GetKeyDown(KeyCode.P) && GetStats.BombsUsed > 0 && OptionsMenu.KeyBoardToShoot == true)
+        if (Input.GetKeyDown(KeyCode.P) && GetStats.BombsUsed > 0 && OptionsMenu.KeyBoardToShoot == true && !PauseMenu.GameIsPaused)
         {
             if (AbombStillExist == null)
             {
