@@ -149,7 +149,7 @@ public class EscapeEnemy : EnemyMovement
                 float[] TempForEqn2 = {BulletYComponent[0], -ThisEnemyYComponent[0], ThisEnemyYComponent[1] - BulletYComponent[1]};
 
                 SimultaneousEqnSolver SolveForEqn = new SimultaneousEqnSolver(TempForEqn1, TempForEqn2);
-                if (!SolveForEqn.EnemyGoingTowardsBullet())
+                if (SolveForEqn.EnemyGoingAwayFromBullet())
                 {
                     transform.Translate(MoveVector * moveSpeed * Time.deltaTime);
                 }

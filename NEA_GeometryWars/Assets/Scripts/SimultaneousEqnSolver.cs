@@ -29,6 +29,7 @@ public class SimultaneousEqnSolver
             Eqn2Coefficients[i] *= TempForEqn1xCoeffcient;
         }
 
+        //as the coefficient of X is the same, i just ignored it and subtract each of the other terms.
         float CoefficientOfY = Eqn1Coefficients[1] - Eqn2Coefficients[1];
         float CoefficientYTimesYEquals = Eqn1Coefficients[2] - Eqn2Coefficients[2];
         y = CoefficientYTimesYEquals / CoefficientOfY;
@@ -38,18 +39,12 @@ public class SimultaneousEqnSolver
         
     }
 
-    public bool EnemyGoingTowardsBullet()
+    public bool EnemyGoingAwayFromBullet()
     {
         SolveSimulEqn();
 
-        //if either just the x or y is negative then it means the enemy is heading away from the bullet.
-        if(x < 0 || y < 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        //if either just the x or y is negative then it means the enemy is moving away from the bullet.
+        bool is_enemey_moving_away = x < 0 || y < 0;
+        return is_enemey_moving_away;
     }
-}
+} 
